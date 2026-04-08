@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Entity
 @Table(name = "status")
 @Data
@@ -19,5 +21,8 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     String roleName;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<User> users;
 
 }
