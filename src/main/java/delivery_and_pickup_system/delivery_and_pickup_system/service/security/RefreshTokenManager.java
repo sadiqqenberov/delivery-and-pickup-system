@@ -1,0 +1,52 @@
+package delivery_and_pickup_system.delivery_and_pickup_system.service.security;
+
+import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.properties.security.SecurityProperties;
+import delivery_and_pickup_system.delivery_and_pickup_system.service.base.TokenGenerator;
+import delivery_and_pickup_system.delivery_and_pickup_system.service.base.TokenReader;
+import delivery_and_pickup_system.delivery_and_pickup_system.utils.PublicPrivateKeyUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class RefreshTokenManager implements TokenGenerator<RefreshTokenDto>, TokenReader<Claims> {
+
+    private final SecurityProperties securityProperties;
+
+
+    @Override
+    public String generate(RefreshTokenDto obj) {
+        final User user = obj.getUser();
+
+        Claims claims = Jwts.claims();
+        claims.put("email", user.getEmail());
+        claims.put("type", "REFRESH_TOKEN");
+
+        Date now = new Date();
+
+        return Jwts.builder()
+                .setSubject(String.valueOf(user.getId()))
+                .setIssuedAt(now)
+                .addClaims(claims)
+                .signWith(PublicPrivateKeyUtils.getPrivateKey(), SignatureAlgorithm.RS256)
+                .compact();
+    }
+
+    @Override
+    public Claims read(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(PublicPrivateKeyUtils.getPublicKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+}

@@ -1,12 +1,10 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.base;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+@Builder
 @Entity
 @Table(name = "users")
 @Data

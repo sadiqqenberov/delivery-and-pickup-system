@@ -20,4 +20,7 @@ public final class Meta {
                 .build();
     }
 
+    public static Meta of(ResponseMessage responseMessage) {
+        return of(responseMessage.key(), responseMessage.message());
+    }
 }
