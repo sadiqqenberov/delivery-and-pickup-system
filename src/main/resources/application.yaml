@@ -1,5 +1,30 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/course_esp_db
+    url: jdbc:postgresql://localhost:5432/delivery_and_pickup
     username: postgres
     password: Sadiq2002
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      keepalive-time: 60000
+      minimum-idle: 3
+      maximum-pool-size: 4
+      auto-commit: true
+      connection-test-query: select 1
+      jpa:
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            default_schema: public
+        hibernate:
+          ddl-auto: none
+        show-sql: false
+        defer-datasource-initialization: false
+        open-in-view: false
+      h2:
+        console:
+          enabled: true
+      sql:
+        init:
+          mode: always
