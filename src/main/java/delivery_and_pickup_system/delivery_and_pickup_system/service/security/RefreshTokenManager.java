@@ -5,6 +5,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTo
 import delivery_and_pickup_system.delivery_and_pickup_system.model.properties.security.SecurityProperties;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.base.TokenGenerator;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.base.TokenReader;
+import delivery_and_pickup_system.delivery_and_pickup_system.service.getters.EmailGetter;
 import delivery_and_pickup_system.delivery_and_pickup_system.utils.PublicPrivateKeyUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,10 +16,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.EMAIL_KEY;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class RefreshTokenManager implements TokenGenerator<RefreshTokenDto>, TokenReader<Claims> {
+public class RefreshTokenManager implements TokenGenerator<RefreshTokenDto>, TokenReader<Claims>, EmailGetter {
 
     private final SecurityProperties securityProperties;
 
@@ -43,10 +46,22 @@ public class RefreshTokenManager implements TokenGenerator<RefreshTokenDto>, Tok
 
     @Override
     public Claims read(String token) {
-        return Jwts.parserBuilder()
+        Claims tokenData =  Jwts.parserBuilder()
                 .setSigningKey(PublicPrivateKeyUtils.getPublicKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+
+        String typeOfToken = tokenData.get("type", String.class);
+
+        if(!"REFRESH_TOKEN".equals(typeOfToken)) {
+            throw new RuntimeException("Wrong token type");
+        }
+        return tokenData;
+    }
+
+    @Override
+    public String getEmail(String token) {
+        return read(token).get(EMAIL_KEY,String.class);
     }
 }

@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.base;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.user.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -27,4 +28,10 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+
+    public boolean isActive() {
+        return UserStatus.ACTIVE.equals(status);
+    }
+
 }

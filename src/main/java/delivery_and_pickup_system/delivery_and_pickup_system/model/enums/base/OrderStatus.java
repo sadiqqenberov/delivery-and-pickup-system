@@ -1,4 +1,4 @@
-package delivery_and_pickup_system.delivery_and_pickup_system.model.enums;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.enums.base;
 
 public enum OrderStatus {
 
