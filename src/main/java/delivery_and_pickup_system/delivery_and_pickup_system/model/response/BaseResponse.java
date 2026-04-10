@@ -1,14 +1,17 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
 import static delivery_and_pickup_system.delivery_and_pickup_system.model.response.SuccessResponseMessages.SUCCESS;
 
 @Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse<T> {
     HttpStatus status;
     Meta meta;
@@ -26,5 +29,13 @@ public class BaseResponse<T> {
     public static <T> BaseResponse<T> success() {
         return success(null);
     }
+
+    public static BaseResponse<?> error(BaseException ex) {
+        return BaseResponse.builder()
+                .meta(Meta.of(ex))
+                .status(ex.getResponseMessage().status())
+                .build();
+    }
+
 
 }

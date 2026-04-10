@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.user;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(),"email",email)
+                );
     }
 }

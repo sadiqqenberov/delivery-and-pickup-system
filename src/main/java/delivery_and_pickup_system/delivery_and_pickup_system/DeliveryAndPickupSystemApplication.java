@@ -1,11 +1,9 @@
 package delivery_and_pickup_system.delivery_and_pickup_system;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -15,26 +13,19 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 		SpringApplication.run(DeliveryAndPickupSystemApplication.class, args);
 	}
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+
 
     @Override
     public void run(String... args) throws Exception {
 
-//        User user = User.builder()
-//                .name("Sadiq")
-//                .surname("Qenberov")
-//                .password(passwordEncoder.encode("1234"))
-//                .phoneNumber("0517773663")
-//                .status(String.valueOf(UserStatus.ACTIVE))
-//                .email("sadiqqenberov26@gmail.com")
-//                .build();
-//
-//        userService.insert(user);
-
-//        System.out.println(userService.getByEmail("sadiqqenberov26@gmail.com"));
     }
 
+
+
+
+
+//    private final UserService userService;
+//    private final PasswordEncoder passwordEncoder;
 //    private final AccessTokenManager accessTokenManager;
 //
 //    @Override
