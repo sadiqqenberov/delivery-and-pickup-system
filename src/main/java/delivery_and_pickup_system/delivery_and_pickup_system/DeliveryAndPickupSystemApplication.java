@@ -9,40 +9,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @RequiredArgsConstructor
 public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DeliveryAndPickupSystemApplication.class, args);
-	}
-
-
+    public static void main(String[] args) {
+        SpringApplication.run(DeliveryAndPickupSystemApplication.class, args);
+    }
 
     @Override
     public void run(String... args) throws Exception {
 
     }
+}
 
 
-
-
-
-//    private final UserService userService;
-//    private final PasswordEncoder passwordEncoder;
-//    private final AccessTokenManager accessTokenManager;
-//
 //    @Override
 //    public void run(String... args) throws Exception {
-//
-//        User user = User.builder().email("sadiqqenberov26@gmail.com").password("password").build();
-//        user.setId(1);
-//
-//        final String token = accessTokenManager.generate(user);
-//
-//        System.out.println(token);
-//
-//        System.out.println(accessTokenManager.read(token).get("email", String.class));
-
-
-
-//        KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");
+//KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");
 //        keyGenerator.initialize(2048);
 //        KeyPair kp = keyGenerator.genKeyPair();
 //        PublicKey publicKey = kp.getPublic();
@@ -56,9 +36,9 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 //        System.out.println();
 //
 //        System.out.println(convertToPrivateKey(encodedPrivateKey));
-
-    }
-
+//
+//    }
+//
 //    private static String convertToPrivateKey(String key) {
 //        StringBuilder result = new StringBuilder();
 //        result.append("-----BEGIN PRIVATE KEY-----\n");
@@ -75,3 +55,29 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 //        return result.toString();
 //    }
 //}
+//
+//
+//
+//
+//
+//
+////    private final UserService userService;
+////    private final PasswordEncoder passwordEncoder;
+////    private final AccessTokenManager accessTokenManager;
+////
+////    @Override
+////    public void run(String... args) throws Exception {
+////
+////        User user = User.builder().email("sadiqqenberov26@gmail.com").password("password").build();
+////        user.setId(1);
+////
+////        final String token = accessTokenManager.generate(user);
+////
+////        System.out.println(token);
+////
+////        System.out.println(accessTokenManager.read(token).get("email", String.class));
+////    }}
+//
+//
+//
+//

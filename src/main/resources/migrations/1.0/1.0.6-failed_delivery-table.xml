@@ -5,18 +5,19 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="4" author="sadiq">
-        <addColumn tableName="roles">
-            <column name="owner_id" type="BIGINT">
-                <constraints nullable="true"/>
+    <!-- FAILED_DELIVERY TABLE -->
+    <changeSet id="10" author="sadiq">
+        <createTable tableName="failed_delivery">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="description" type="VARCHAR(500)"/>
-
-            <column name="is_deleted" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="shipment_id" type="INT">
                 <constraints nullable="false"/>
             </column>
-        </addColumn>
+
+            <column name="note" type="VARCHAR(500)"/>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>
