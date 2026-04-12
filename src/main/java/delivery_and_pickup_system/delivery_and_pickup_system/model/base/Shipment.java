@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "shipments")
 @Data
@@ -29,7 +31,7 @@ public class Shipment {
 
     Double weight;
 
-    Double price;
+    BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")

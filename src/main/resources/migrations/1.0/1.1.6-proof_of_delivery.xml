@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="16" author="sadiq">
+
+        <createTable tableName="proof_of_delivery">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="received_by" type="VARCHAR(255)"/>
+
+            <column name="signature_url" type="VARCHAR(500)"/>
+
+            <column name="photo_url" type="VARCHAR(500)"/>
+
+            <column name="otp_code" type="VARCHAR(50)"/>
+
+            <column name="confirmed_at" type="TIMESTAMP"/>
+
+            <column name="shipment_id" type="INT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

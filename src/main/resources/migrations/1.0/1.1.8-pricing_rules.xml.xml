@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="pricing-1" author="sadiq">
+
+        <createTable tableName="pricing_rules">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="min_weight" type="DOUBLE"/>
+
+            <column name="max_weight" type="DOUBLE"/>
+
+            <column name="base_price" type="DOUBLE"/>
+
+            <column name="price_per_km" type="DOUBLE"/>
+
+            <column name="is_express" type="BOOLEAN"/>
+
+            <column name="extra_charge" type="DOUBLE"/>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
