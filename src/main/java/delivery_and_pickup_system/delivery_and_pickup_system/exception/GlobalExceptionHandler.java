@@ -1,6 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.exception;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.model.response.BaseResponse;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

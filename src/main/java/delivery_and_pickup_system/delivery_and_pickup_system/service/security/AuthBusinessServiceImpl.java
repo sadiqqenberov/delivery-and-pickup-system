@@ -4,7 +4,9 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.RefreshTokenPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.signup.SignUpPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
+import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     private final RefreshTokenManager refreshTokenManager;
     private final UserService userService;
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
 
     @Override
     public LoginResponse login(LoginPayload payload) {
@@ -37,7 +41,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     }
 
     @Override
-    public LoginResponse refresh(RefreshTokenPayload payload) {
+    public LoginResponse refresh(@RequestBody RefreshTokenPayload payload) {
 
         return prepareLoginResponse(refreshTokenManager.getEmail(
                         payload.getRefreshToken()),
@@ -51,12 +55,27 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     }
 
     @Override
-    public void setAuthentication(String email) {
+    public void setAuthentication(@RequestBody String email) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities())
         );
+    }
+
+    @Override
+    public User signUp(@RequestBody SignUpPayload payload) {
+        User user =new User();
+
+        user.setEmail(payload.getEmail());
+        user.setPassword(payload.getPassword());
+        user.setName(payload.getName());
+        user.setPhoneNumber(payload.getPhoneNumber());
+        user.setAddress(payload.getAddress());
+        user.setSurname(payload.getSurname());
+        user.setStatus(payload.getStatus());
+        return userRepository.save(user);
+
     }
 
     private void authenticate(LoginPayload payload) {

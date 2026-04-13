@@ -1,4 +1,4 @@
-package delivery_and_pickup_system.delivery_and_pickup_system.model.response;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.response.base;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;

@@ -1,19 +1,21 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.RefreshTokenPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.response.BaseResponse;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.signup.SignUpPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.security.AuthBusinessService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.experimental.FieldDefaults;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthController {
 
     private final AuthBusinessService authBusinessService;
@@ -35,4 +37,13 @@ public class AuthController {
         return BaseResponse.success();
     }
 
+    @PostMapping("/sign-up")
+    public User sigUp(@RequestBody SignUpPayload payload) {
+        return authBusinessService.signUp(payload);
+    }
+
+    @GetMapping("/me")
+    public BaseResponse<User> getCurrentUser() {
+        return null;
+    }
 }

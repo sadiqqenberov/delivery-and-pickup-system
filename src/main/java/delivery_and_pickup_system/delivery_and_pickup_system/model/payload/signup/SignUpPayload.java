@@ -1,32 +1,24 @@
-package delivery_and_pickup_system.delivery_and_pickup_system.model.base;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.payload.signup;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.user.UserStatus;
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Builder
-@Entity
-@Table(name = "user")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class SignUpPayload {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
     String name;
     String surname;
     UserStatus status;
+    Role role;
     String email;
     String phoneNumber;
     String password;
     String address;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
 
 }

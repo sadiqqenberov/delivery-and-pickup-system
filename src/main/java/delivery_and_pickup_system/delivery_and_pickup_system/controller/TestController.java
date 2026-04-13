@@ -1,7 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.response.BaseResponse;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

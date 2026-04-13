@@ -1,7 +1,8 @@
-package delivery_and_pickup_system.delivery_and_pickup_system.model.response;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.response.base;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.type.NotFoundExceptionType;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.ResponseMessage;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

@@ -1,6 +1,5 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.model.response.BaseResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorResponseMessages implements ResponseMessage {
     UNEXPECTED("unexpected","unexpected error",HttpStatus.INTERNAL_SERVER_ERROR),
     NOT_FOUND("not_found_%s","%s can't find %s", HttpStatus.NOT_FOUND),
-
+    EMAIL_ALREADY_REGISTERED("email_already_registered", "Email already registered", HttpStatus.CONFLICT),
     ;
 
     String key;
