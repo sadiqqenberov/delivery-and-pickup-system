@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 @Entity
-@Table(name = "status")
+@Table(name = "roles")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

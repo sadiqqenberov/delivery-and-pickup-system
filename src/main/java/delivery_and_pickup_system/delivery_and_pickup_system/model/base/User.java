@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 @Builder
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +19,7 @@ public class User {
     Integer id;
     String name;
     String surname;
-    UserStatus status;
+    String status = String.valueOf(UserStatus.ACTIVE);
     String email;
     String phoneNumber;
     String password;
@@ -28,5 +28,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+
 
 }

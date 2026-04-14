@@ -1,4 +1,4 @@
-package delivery_and_pickup_system.delivery_and_pickup_system.model.payload.signup;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.user.UserStatus;
@@ -14,11 +14,9 @@ public class SignUpPayload {
 
     String name;
     String surname;
-    UserStatus status;
-    Role role;
+//    Integer role;
     String email;
     String phoneNumber;
     String password;
     String address;
-
 }

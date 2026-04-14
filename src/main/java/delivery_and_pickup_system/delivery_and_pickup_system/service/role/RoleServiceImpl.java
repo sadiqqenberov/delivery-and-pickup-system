@@ -1,0 +1,32 @@
+package delivery_and_pickup_system.delivery_and_pickup_system.service.role;
+
+import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.role.RoleDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.repository.RoleRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class RoleServiceImpl implements  RoleService{
+
+    private final RoleRepository roleRepository;
+
+    @Override
+    public Role createRole(@RequestBody RoleDto roleDto) {
+        Role role = new Role();
+        role.setRoleName(roleDto.getRoleName());
+        return roleRepository.save(role);
+    }
+
+    @Override
+    public Void deleteRole(Long id) {
+        roleRepository.deleteById(id);
+        return null;
+    }
+
+}

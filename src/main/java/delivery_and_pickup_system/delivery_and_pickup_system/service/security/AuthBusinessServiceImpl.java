@@ -1,10 +1,10 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.security;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.LoginPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.RefreshTokenPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.signup.SignUpPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
@@ -73,7 +73,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
         user.setPhoneNumber(payload.getPhoneNumber());
         user.setAddress(payload.getAddress());
         user.setSurname(payload.getSurname());
-        user.setStatus(payload.getStatus());
+//        user.setStatus(String.valueOf(payload.getStatus()));
         return userRepository.save(user);
 
     }

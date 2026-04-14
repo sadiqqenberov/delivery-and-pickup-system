@@ -51,10 +51,17 @@ public class SecurityConfig {
                     request.requestMatchers("/auth/logout").authenticated();
                     request.requestMatchers("/auth/**").anonymous();
 
+                    //Role URLs
+                    request.requestMatchers("/role/creat").permitAll();
+                    request.requestMatchers("/role/delete/{id}").permitAll();
+
+                    //User URLs
+                    request.requestMatchers("/users/creat").permitAll();
+                    request.requestMatchers("/users/findAll").permitAll();
+
                     // Test endpoints
                     request.requestMatchers("/test").authenticated();
                     request.requestMatchers("/test/no-auth").permitAll();
-
                     // Temporary
                     request.requestMatchers("/**").authenticated();
                 })

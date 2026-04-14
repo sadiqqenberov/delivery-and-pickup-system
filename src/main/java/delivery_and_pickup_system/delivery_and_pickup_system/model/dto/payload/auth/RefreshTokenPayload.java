@@ -1,4 +1,4 @@
-package delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,10 +8,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LoginPayload {
+public class RefreshTokenPayload {
 
-    String email;
-    String password;
+    String refreshToken;
+
     boolean rememberMe;
 
 }

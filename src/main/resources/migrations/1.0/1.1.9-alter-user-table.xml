@@ -20,4 +20,10 @@
 
     </changeSet>
 
+    <changeSet id="4" author="sadiq">
+
+        <renameTable oldTableName="user" newTableName="users"/>
+
+    </changeSet>
+
 </databaseChangeLog>

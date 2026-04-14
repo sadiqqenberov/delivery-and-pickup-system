@@ -1,9 +1,9 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.security;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.LoginPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.RefreshTokenPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.signup.SignUpPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
 
 public interface AuthBusinessService {

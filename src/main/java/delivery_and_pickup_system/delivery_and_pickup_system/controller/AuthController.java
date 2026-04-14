@@ -1,9 +1,9 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.LoginPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.auth.RefreshTokenPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.payload.signup.SignUpPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.security.AuthBusinessService;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthController {
 
-    private final AuthBusinessService authBusinessService;
+    final AuthBusinessService authBusinessService;
 
 
     @PostMapping("/login")
@@ -38,8 +38,9 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public User sigUp(@RequestBody SignUpPayload payload) {
-        return authBusinessService.signUp(payload);
+    public BaseResponse <User> sigUp(@RequestBody SignUpPayload payload) {
+        authBusinessService.signUp(payload);
+        return BaseResponse.success();
     }
 
     @GetMapping("/me")
