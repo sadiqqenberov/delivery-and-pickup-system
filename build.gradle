@@ -34,13 +34,13 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
-//	// MapStruct
-//	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-//	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-//
-//	// Lombok + MapStruct binding (VERY IMPORTANT)
-//	implementation "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
-//	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	// MapStruct
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+	// Lombok + MapStruct binding (VERY IMPORTANT)
+	implementation "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 
 	runtimeOnly 'org.postgresql:postgresql'
 

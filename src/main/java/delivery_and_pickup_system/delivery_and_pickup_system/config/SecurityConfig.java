@@ -57,7 +57,12 @@ public class SecurityConfig {
 
                     //User URLs
                     request.requestMatchers("/users/creat").permitAll();
-                    request.requestMatchers("/users/findAll").permitAll();
+                    request.requestMatchers("/users/all").permitAll();
+                    request.requestMatchers("/users/{id}").permitAll();
+                    request.requestMatchers("/users/update/").permitAll();
+                    request.requestMatchers("/users/{id}/status").permitAll();
+                    request.requestMatchers("/users/{id}/role").permitAll();
+                    request.requestMatchers("/users/couriers").permitAll();
 
                     // Test endpoints
                     request.requestMatchers("/test").authenticated();

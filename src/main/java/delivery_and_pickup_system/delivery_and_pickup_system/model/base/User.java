@@ -29,6 +29,4 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-
-
 }

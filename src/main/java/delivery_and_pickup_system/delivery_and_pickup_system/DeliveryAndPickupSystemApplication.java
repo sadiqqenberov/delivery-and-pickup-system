@@ -17,7 +17,7 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
     }
-}
+
 
 
 //    @Override
@@ -61,22 +61,23 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 //
 //
 //
-////    private final UserService userService;
-////    private final PasswordEncoder passwordEncoder;
-////    private final AccessTokenManager accessTokenManager;
-////
-////    @Override
-////    public void run(String... args) throws Exception {
-////
-////        User user = User.builder().email("sadiqqenberov26@gmail.com").password("password").build();
-////        user.setId(1);
-////
-////        final String token = accessTokenManager.generate(user);
-////
-////        System.out.println(token);
-////
-////        System.out.println(accessTokenManager.read(token).get("email", String.class));
-////    }}
+//    private final UserService userService;
+//    private final PasswordEncoder passwordEncoder;
+//    private final AccessTokenManager accessTokenManager;
+//
+//    @Override
+//    public void run(String... args) throws Exception {
+//
+//        User user = User.builder().email("sadiqqenberov26@gmail.com").password("password").build();
+//        user.setId(1);
+//
+//        final String token = accessTokenManager.generate(user);
+//
+//        System.out.println(token);
+//
+//        System.out.println(accessTokenManager.read(token).get("email", String.class));
+//    }
+    }
 //
 //
 //
