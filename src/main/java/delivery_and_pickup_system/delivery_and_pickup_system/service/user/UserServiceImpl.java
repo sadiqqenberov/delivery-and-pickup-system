@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User creatUser(UserDto userDto) {
+        //todo: burada rola bax
         User user = new User();
         user.setName(userDto.getName());
         user.setSurname(userDto.getSurname());

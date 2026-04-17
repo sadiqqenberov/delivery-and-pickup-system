@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="6" author="sadiq">
+
+        <modifyDataType
+                tableName="shipments"
+                columnName="tracking_number"
+                newDataType="INT"/>
+
+    </changeSet>
+
+    <changeSet id="drop-fks-shipments" author="sadiq">
+
+        <dropForeignKeyConstraint baseTableName="assignments" constraintName="fk_assignment_shipment"/>
+        <dropForeignKeyConstraint baseTableName="deliveries" constraintName="fk_delivery_shipment"/>
+        <dropForeignKeyConstraint baseTableName="failed_delivery" constraintName="fk_failed_delivery_shipment"/>
+        <dropForeignKeyConstraint baseTableName="returns" constraintName="fk_return_shipment"/>
+        <dropForeignKeyConstraint baseTableName="status_history" constraintName="fk_status_history_shipment"/>
+        <dropForeignKeyConstraint baseTableName="proof_of_delivery" constraintName="fk_pod_shipment"/>
+
+    </changeSet>
+
+    <changeSet id="drop-shipments" author="sadiq">
+
+        <dropTable tableName="shipments"/>
+
+    </changeSet>
+
+    <changeSet id="create-shipments-new" author="sadiq">
+
+        <createTable tableName="shipments">
+
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="tracking_number" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="sender_name" type="VARCHAR(255)"/>
+            <column name="sender_phone" type="VARCHAR(20)"/>
+
+            <column name="receiver_name" type="VARCHAR(255)"/>
+            <column name="receiver_phone" type="VARCHAR(20)"/>
+
+            <column name="delivery_address" type="VARCHAR(500)"/>
+
+            <column name="weight" type="DOUBLE"/>
+
+            <column name="price" type="DECIMAL(19,2)"/>
+
+            <column name="status" type="VARCHAR(50)"/>
+
+            <column name="created_by" type="BIGINT"/>
+
+        </createTable>
+
+    </changeSet>
+    <changeSet id="create-fks-shipments" author="sadiq">
+
+        <addForeignKeyConstraint
+                baseTableName="assignments"
+                baseColumnNames="shipment_id"
+                referencedTableName="shipments"
+                referencedColumnNames="id"
+                constraintName="fk_assignment_shipment"/>
+
+        <addForeignKeyConstraint
+                baseTableName="deliveries"
+                baseColumnNames="shipment_id"
+                referencedTableName="shipments"
+                referencedColumnNames="id"
+                constraintName="fk_delivery_shipment"/>
+
+        <addForeignKeyConstraint
+                baseTableName="failed_delivery"
+                baseColumnNames="shipment_id"
+                referencedTableName="shipments"
+                referencedColumnNames="id"
+                constraintName="fk_failed_delivery_shipment"/>
+
+        <addForeignKeyConstraint
+                baseTableName="returns"
+                baseColumnNames="shipment_id"
+                referencedTableName="shipments"
+                referencedColumnNames="id"
+                constraintName="fk_return_shipment"/>
+
+        <addForeignKeyConstraint
+                baseTableName="status_history"
+                baseColumnNames="shipment_id"
+                referencedTableName="shipments"
+                referencedColumnNames="id"
+                constraintName="fk_status_history_shipment"/>
+
+        <addForeignKeyConstraint
+                baseTableName="proof_of_delivery"
+                baseColumnNames="shipment_id"
+                referencedTableName="shipments"
+                referencedColumnNames="id"
+                constraintName="fk_pod_shipment"/>
+
+    </changeSet>
+</databaseChangeLog>

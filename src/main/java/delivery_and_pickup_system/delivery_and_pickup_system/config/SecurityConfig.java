@@ -64,34 +64,37 @@ public class SecurityConfig {
                     request.requestMatchers("/users/{id}/role").permitAll();
                     request.requestMatchers("/users/couriers").permitAll();
 
+                    //Shipment URLs
+                    request.requestMatchers("/shipment/creat").permitAll();
+                    request.requestMatchers("/shipment/all").permitAll();
+                    request.requestMatchers("/shipment/{id}").permitAll();
+                    request.requestMatchers("/shipment/tracking/{trackingNumber}").permitAll();
+                    request.requestMatchers("/shipment/update/{id}").permitAll();
+                    request.requestMatchers("/shipment/cancel/{id}").permitAll();
+                    request.requestMatchers("/shipment/delete/{id}").permitAll();
+
+                    //PricingRule URLs
+                    request.requestMatchers("/pricing-rule/calculate").permitAll();
+                    request.requestMatchers("/pricing-rule/all").permitAll();
+                    request.requestMatchers("/pricing-rule/update/{id}").permitAll();
+                    request.requestMatchers("/pricing-rule/creat").permitAll();
+
+
                     // Test endpoints
                     request.requestMatchers("/test").authenticated();
                     request.requestMatchers("/test/no-auth").permitAll();
+
+                    //Assignment URLs
+                    request.requestMatchers("/assignment").permitAll();
+
+
                     // Temporary
                     request.requestMatchers("/**").authenticated();
                 })
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .exceptionHandling(eh -> eh.authenticationEntryPoint(authEntryPoint))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
 
-//    @Component
-//    @RequiredArgsConstructor
-//    @Slf4j
-//    public static class AuthEntryPoint implements AuthenticationEntryPoint {
-//
-//        @Qualifier("handlerExceptionResolver")
-//        private final HandlerExceptionResolver resolver;
-//
-//        @Override
-//        public void commence(HttpServletRequest request,
-//                             HttpServletResponse response,
-//                             AuthenticationException authException) throws IOException, ServletException {
-//
-//            authException.printStackTrace();
-////            resolver.resolveException(request, response, null, BaseException.of(ErrorResponseMessages.FORBIDDEN));
-//        }
-//    }
 }

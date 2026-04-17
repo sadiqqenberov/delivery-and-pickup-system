@@ -4,6 +4,14 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
+
+    Optional<Shipment> findByTrackingNumber(Integer trackingNumber);
+
+    Shipment findById(int id);
+
+    void deleteById(int id);
 }

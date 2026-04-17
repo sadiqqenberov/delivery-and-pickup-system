@@ -26,4 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getEmail(), user.getPassword() , new ArrayList<>()
         );
     }
+
+
 }

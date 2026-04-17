@@ -44,12 +44,12 @@ public class UserController {
         return userService.update(id,userDto);
     }
 
-    @PatchMapping("/{id}/status")
+    @PatchMapping("/status/{id}")
     public UserStatusDto updateUserStatus(@PathVariable int id, @RequestBody UserStatusDto userStatusDto) {
         return userService.updateStatus(id,userStatusDto);
     }
 
-    @PatchMapping("/{id}/role")
+    @PatchMapping("/role/{id}")
     public UserRoleDto updateUserRole(@PathVariable int id, @RequestBody UserRoleDto userRoleDto) {
         return userService.updateUserRole(id,userRoleDto);
     }

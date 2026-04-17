@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShipmentDto {
 
-    String trackingNumber;
+    Integer trackingNumber;
     String senderName;
     String senderPhone;
     String receiverName;
@@ -22,5 +23,8 @@ public class ShipmentDto {
     String deliveryAddress;
     Double weight;
     BigDecimal price;
+    OrderStatus status;
+
+    CreatedByDto createdBy;
 
 }

@@ -5,6 +5,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Base64;
+
 @SpringBootApplication
 @RequiredArgsConstructor
 public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
@@ -17,6 +23,7 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
     }
+}
 
 
 
@@ -77,7 +84,7 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 //
 //        System.out.println(accessTokenManager.read(token).get("email", String.class));
 //    }
-    }
+
 //
 //
 //

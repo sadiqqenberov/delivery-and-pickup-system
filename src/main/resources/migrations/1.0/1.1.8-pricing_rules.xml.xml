@@ -5,25 +5,25 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="pricing-1" author="sadiq">
+    <changeSet id="create-pricing-rules-v2" author="sadiq">
 
         <createTable tableName="pricing_rules">
 
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="min_weight" type="DOUBLE"/>
-
             <column name="max_weight" type="DOUBLE"/>
+
+            <column name="max_distance" type="DOUBLE"/>
 
             <column name="base_price" type="DOUBLE"/>
 
-            <column name="price_per_km" type="DOUBLE"/>
+            <column name="extra_price_per_kg" type="DOUBLE"/>
 
-            <column name="is_express" type="BOOLEAN"/>
+            <column name="extra_price_per_km" type="DOUBLE"/>
 
-            <column name="extra_charge" type="DOUBLE"/>
+            <column name="standard_delivery" type="VARCHAR(255)"/>
 
         </createTable>
 
