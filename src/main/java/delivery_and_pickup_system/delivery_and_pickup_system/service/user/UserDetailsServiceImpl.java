@@ -22,9 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userService.getByEmail(username);
 
-        return new LoggedInUserDetails(
-                user.getEmail(), user.getPassword() , new ArrayList<>()
-        );
+        return new LoggedInUserDetails(user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 
 

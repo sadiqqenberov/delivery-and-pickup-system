@@ -16,12 +16,12 @@ public interface ShipmentMapper {
 
     List<ShipmentDto> toDtoList(List<Shipment> shipments);
 
-    void updateShipmentFromDto(ShipmentDto dto, @MappingTarget Shipment shipment);
-
+    @Mapping(target = "createdByName", source = "createdBy.name")
     ShipmentDto toDto(Shipment shipment);
 
+    @Mapping(target = "createdBy", ignore = true)
     Shipment toEntity(ShipmentDto dto);
 
-
-
+    @Mapping(target = "createdBy", ignore = true)
+    void updateShipmentFromDto(ShipmentDto dto, @MappingTarget Shipment shipment);
 }

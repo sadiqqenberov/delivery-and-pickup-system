@@ -79,14 +79,16 @@ public class SecurityConfig {
                     request.requestMatchers("/pricing-rule/update/{id}").permitAll();
                     request.requestMatchers("/pricing-rule/creat").permitAll();
 
+                    //Assignment URLs
+                    request.requestMatchers("/assignments").permitAll();
+                    request.requestMatchers("/assignments/{id}").permitAll();
+                    request.requestMatchers("/assignments/update/{id}").permitAll();
+                    request.requestMatchers("/assignments/courier/{courierId}").permitAll();
+                    request.requestMatchers("/assignments/my").permitAll();
 
                     // Test endpoints
                     request.requestMatchers("/test").authenticated();
                     request.requestMatchers("/test/no-auth").permitAll();
-
-                    //Assignment URLs
-                    request.requestMatchers("/assignment").permitAll();
-
 
                     // Temporary
                     request.requestMatchers("/**").authenticated();

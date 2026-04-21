@@ -1,7 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.repository;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +19,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.role.id = :roleId")
     List<User> findAllCouriers(@Param("roleId") Long roleId);
 
+    Optional<User> findByNameAndSurname(String name, String surname);
 }

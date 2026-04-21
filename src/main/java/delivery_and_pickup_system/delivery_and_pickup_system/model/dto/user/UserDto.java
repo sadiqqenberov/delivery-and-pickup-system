@@ -1,7 +1,5 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user;
 
-
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.role.RoleDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDto{
+public class UserDto {
 
     String name;
     String surname;
@@ -20,6 +18,6 @@ public class UserDto{
     String phoneNumber;
     String password;
     String address;
-    RoleDto role;
 
+    String role;
 }

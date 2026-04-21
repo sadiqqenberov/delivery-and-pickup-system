@@ -1,11 +1,13 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.security;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
+import delivery_and_pickup_system.delivery_and_pickup_system.repository.RoleRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public LoginResponse login(LoginPayload payload) {
@@ -64,8 +67,12 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     }
 
     @Override
-    public User signUp(@RequestBody SignUpPayload payload) {
-        User user =new User();
+    public User signUp(SignUpPayload payload) {
+
+        Role role = roleRepository.findByRoleName("Customer")
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        User user = new User();
 
         user.setEmail(payload.getEmail());
         user.setPassword(payload.getPassword());
@@ -73,9 +80,10 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
         user.setPhoneNumber(payload.getPhoneNumber());
         user.setAddress(payload.getAddress());
         user.setSurname(payload.getSurname());
-//        user.setStatus(String.valueOf(payload.getStatus()));
-        return userRepository.save(user);
 
+        user.setRole(role);
+
+        return userRepository.save(user);
     }
 
     private void authenticate(LoginPayload payload) {

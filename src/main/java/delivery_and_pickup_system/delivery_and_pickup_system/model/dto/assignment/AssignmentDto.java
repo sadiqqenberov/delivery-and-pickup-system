@@ -1,4 +1,4 @@
-package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.assignment;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,9 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreatedByDto {
+public class AssignmentDto {
 
-    String createdBy;
+    Integer shipmentId;
+    Integer courierId;
 
 }

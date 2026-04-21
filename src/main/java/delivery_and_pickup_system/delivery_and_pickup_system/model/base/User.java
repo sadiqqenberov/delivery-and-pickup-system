@@ -19,7 +19,8 @@ public class User {
     Integer id;
     String name;
     String surname;
-    String status = String.valueOf(UserStatus.ACTIVE);
+    @Enumerated(EnumType.STRING)
+    UserStatus status = UserStatus.ACTIVE;
     String email;
     String phoneNumber;
     String password;
