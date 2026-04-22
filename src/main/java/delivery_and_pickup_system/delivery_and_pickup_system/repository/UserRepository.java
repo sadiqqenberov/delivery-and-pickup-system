@@ -20,4 +20,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findAllCouriers(@Param("roleId") Long roleId);
 
     Optional<User> findByNameAndSurname(String name, String surname);
+
 }

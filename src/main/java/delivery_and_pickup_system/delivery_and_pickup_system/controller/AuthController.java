@@ -4,9 +4,11 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.security.AuthBusinessService;
+import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -43,8 +45,4 @@ public class AuthController {
         return BaseResponse.success();
     }
 
-    @GetMapping("/me")
-    public BaseResponse<User> getCurrentUser() {
-        return null;
-    }
 }

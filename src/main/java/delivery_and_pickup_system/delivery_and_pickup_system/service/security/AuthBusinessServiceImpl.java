@@ -1,12 +1,15 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.security;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.mapper.UserMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.security.LoggedInUserDetails;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.RoleRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
@@ -18,6 +21,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -33,6 +37,8 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public LoginResponse login(LoginPayload payload) {
@@ -69,13 +75,15 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     @Override
     public User signUp(SignUpPayload payload) {
 
-        Role role = roleRepository.findByRoleName("Customer")
+        Role role = roleRepository.findByRoleName("CUSTOMER")
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         User user = new User();
 
         user.setEmail(payload.getEmail());
-        user.setPassword(payload.getPassword());
+
+        user.setPassword(passwordEncoder.encode(payload.getPassword()));
+
         user.setName(payload.getName());
         user.setPhoneNumber(payload.getPhoneNumber());
         user.setAddress(payload.getAddress());
@@ -85,6 +93,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
 
         return userRepository.save(user);
     }
+
 
     private void authenticate(LoginPayload payload) {
         try {

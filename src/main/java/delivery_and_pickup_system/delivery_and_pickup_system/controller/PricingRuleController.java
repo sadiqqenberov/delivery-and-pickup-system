@@ -8,6 +8,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.service.pricing_ule
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,21 +19,25 @@ public class PricingRuleController {
 
     final PricingRuleService pricingRuleService;
 
+
     @PostMapping("/calculate")
     public PricingResponseDTO calculate(@RequestBody PricingDto dto) throws Exception {
         return pricingRuleService.calculatePrice(dto);
     }
+
 
     @GetMapping("/all")
     public Iterable<PricingRule> findAll() {
         return pricingRuleService.findAll();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update/{id}")
     public PricingRuleDto update(@PathVariable int id,@RequestBody PricingRuleDto pricingRuleDto){
         return pricingRuleService.update(id, pricingRuleDto);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/creat")
     public PricingRule create(@RequestBody PricingRuleDto pricingRuleDto){
         return pricingRuleService.create(pricingRuleDto);

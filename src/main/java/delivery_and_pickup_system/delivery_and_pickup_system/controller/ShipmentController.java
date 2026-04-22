@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -20,17 +21,21 @@ public class ShipmentController {
 
     final ShipmentService shipmentService;
 
+
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     @PostMapping("/creat")
     public BaseResponse<Shipment> create(@RequestBody ShipmentDto shipmentDto) {
         shipmentService.createShipment(shipmentDto);
         return BaseResponse.success();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @GetMapping("/all")
     public MappingJacksonValue findAll(){
         return shipmentService.findAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @GetMapping("/{id}")
     public Shipment findById(@PathVariable int id) {
         return shipmentService.findById(id);
@@ -41,6 +46,7 @@ public class ShipmentController {
         return shipmentService.findByTrackingNumber(trackintNumber);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @PutMapping("/update/{id}")
     public ShipmentDto update(@PathVariable int id, @RequestBody ShipmentDto shipmentDto) {
         return shipmentService.update(id,shipmentDto);
@@ -51,6 +57,7 @@ public class ShipmentController {
     public BaseResponse<ShipmentDto> cancel(@PathVariable Integer id) {
         return null;
     }
+
 
     @DeleteMapping("/delete/{id}")
     public Void delete(@PathVariable Integer id) {

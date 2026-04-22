@@ -15,9 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 @Configuration
-public class SecurityConfig {
+@EnableMethodSecurity
+class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -51,40 +53,14 @@ public class SecurityConfig {
                     request.requestMatchers("/auth/logout").authenticated();
                     request.requestMatchers("/auth/**").anonymous();
 
-                    //Role URLs
-                    request.requestMatchers("/role/creat").permitAll();
-                    request.requestMatchers("/role/delete/{id}").permitAll();
-
-                    //User URLs
-                    request.requestMatchers("/users/creat").permitAll();
-                    request.requestMatchers("/users/all").permitAll();
-                    request.requestMatchers("/users/{id}").permitAll();
-                    request.requestMatchers("/users/update/").permitAll();
-                    request.requestMatchers("/users/{id}/status").permitAll();
-                    request.requestMatchers("/users/{id}/role").permitAll();
-                    request.requestMatchers("/users/couriers").permitAll();
-
                     //Shipment URLs
-                    request.requestMatchers("/shipment/creat").permitAll();
-                    request.requestMatchers("/shipment/all").permitAll();
-                    request.requestMatchers("/shipment/{id}").permitAll();
                     request.requestMatchers("/shipment/tracking/{trackingNumber}").permitAll();
-                    request.requestMatchers("/shipment/update/{id}").permitAll();
                     request.requestMatchers("/shipment/cancel/{id}").permitAll();
                     request.requestMatchers("/shipment/delete/{id}").permitAll();
 
                     //PricingRule URLs
                     request.requestMatchers("/pricing-rule/calculate").permitAll();
                     request.requestMatchers("/pricing-rule/all").permitAll();
-                    request.requestMatchers("/pricing-rule/update/{id}").permitAll();
-                    request.requestMatchers("/pricing-rule/creat").permitAll();
-
-                    //Assignment URLs
-                    request.requestMatchers("/assignments").permitAll();
-                    request.requestMatchers("/assignments/{id}").permitAll();
-                    request.requestMatchers("/assignments/update/{id}").permitAll();
-                    request.requestMatchers("/assignments/courier/{courierId}").permitAll();
-                    request.requestMatchers("/assignments/my").permitAll();
 
                     // Test endpoints
                     request.requestMatchers("/test").authenticated();
@@ -98,5 +74,7 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
+
+
 
 }

@@ -12,7 +12,6 @@ public class SignUpPayload {
 
     String name;
     String surname;
-    //    Integer role;
     String email;
     String phoneNumber;
     String password;

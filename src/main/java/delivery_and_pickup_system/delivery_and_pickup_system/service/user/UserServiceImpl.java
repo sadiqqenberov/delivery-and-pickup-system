@@ -10,11 +10,14 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserRoleDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserStatusDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.security.LoggedInUserDetails;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.RoleRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User getByEmail(String email) {
@@ -40,13 +44,19 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByRoleName(userDto.getRole())
                 .orElseThrow(() -> new RuntimeException("Role tapılmadı: " + userDto.getRole()));
 
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+            throw new RuntimeException("User artıq mövcuddur");
+        }
+
         User user = new User();
         user.setName(userDto.getName());
         user.setSurname(userDto.getSurname());
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setPassword(userDto.getPassword());
         user.setAddress(userDto.getAddress());
+
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
         user.setRole(role);
 
         return userRepository.save(user);
@@ -112,6 +122,23 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAllCouriers() {
         List<User> couriers = userRepository.findAllCouriers(3L);
         return userMapper.toDtoList(couriers);
+    }
+
+
+    @Override
+    public UserDto getCurrentUser() {
+
+        LoggedInUserDetails userDetails =
+                (LoggedInUserDetails) SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+
+        String email = userDetails.getUsername();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+        return userMapper.toDto(user);
     }
 
 

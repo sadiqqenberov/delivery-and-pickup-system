@@ -27,5 +27,7 @@ public interface UserService {
 
     List<UserDto> getAllCouriers();
 
+    UserDto getCurrentUser();
+
 }
 

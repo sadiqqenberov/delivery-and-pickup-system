@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -22,7 +25,7 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 
 //    @Override
 //    public void run(String... args) throws Exception {
-//KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");
+//        KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("RSA");
 //        keyGenerator.initialize(2048);
 //        KeyPair kp = keyGenerator.genKeyPair();
 //        PublicKey publicKey = kp.getPublic();
@@ -38,6 +41,7 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 //        System.out.println(convertToPrivateKey(encodedPrivateKey));
 //
 //    }
+
 //
 //    private static String convertToPrivateKey(String key) {
 //        StringBuilder result = new StringBuilder();
@@ -77,3 +81,4 @@ public class DeliveryAndPickupSystemApplication implements CommandLineRunner {
 //
 //        System.out.println(accessTokenManager.read(token).get("email", String.class));
 //    }
+//}

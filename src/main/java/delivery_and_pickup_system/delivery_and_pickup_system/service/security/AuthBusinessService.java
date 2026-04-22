@@ -4,6 +4,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
 
 public interface AuthBusinessService {
@@ -17,5 +18,4 @@ public interface AuthBusinessService {
     void setAuthentication(String email);
 
     User signUp(SignUpPayload payload);
-
 }
