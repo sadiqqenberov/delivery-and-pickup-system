@@ -2,6 +2,8 @@ package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentResponseDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.shipment.ShipmentService;
 import lombok.AccessLevel;
@@ -23,10 +25,12 @@ public class ShipmentController {
 
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    @PostMapping("/creat")
-    public BaseResponse<Shipment> create(@RequestBody ShipmentDto shipmentDto) {
-        shipmentService.createShipment(shipmentDto);
-        return BaseResponse.success();
+    @PostMapping("/create")
+    public BaseResponse<ShipmentResponseDto> create(@RequestBody ShipmentDto shipmentDto) {
+
+        ShipmentResponseDto response = shipmentService.createShipment(shipmentDto);
+
+        return BaseResponse.success(OrderStatus.CREATED, response);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
@@ -60,8 +64,11 @@ public class ShipmentController {
 
 
     @DeleteMapping("/delete/{id}")
-    public Void delete(@PathVariable Integer id) {
-        return shipmentService.deleteShipment(id);
+    public BaseResponse<?> deleted(@PathVariable Integer id) {
+
+        shipmentService.deleteShipment(id);
+
+        return BaseResponse.success(OrderStatus.DELETED);
     }
 
 }

@@ -2,6 +2,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.model.response.bas
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.ResponseMessage;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
@@ -27,7 +28,7 @@ public class BaseResponse<T> {
     }
 
     public static <T> BaseResponse<T> success() {
-        return success(null);
+        return (BaseResponse<T>) success(null);
     }
 
     public static BaseResponse<?> error(BaseException ex) {
@@ -36,6 +37,16 @@ public class BaseResponse<T> {
                 .status(ex.getResponseMessage().status())
                 .build();
     }
+    public static <T> BaseResponse<T> success(ResponseMessage responseMessage, T data) {
+        return BaseResponse.<T>builder()
+                .status(responseMessage.status())
+                .data(data)
+                .meta(Meta.of(responseMessage))
+                .build();
+    }
 
+    public static BaseResponse<?> success(ResponseMessage responseMessage) {
+        return success(responseMessage, null);
+    }
 
 }

@@ -62,6 +62,9 @@ class SecurityConfig {
                     request.requestMatchers("/pricing-rule/calculate").permitAll();
                     request.requestMatchers("/pricing-rule/all").permitAll();
 
+                    //StatusHistory URLs
+                    request.requestMatchers("/status_history/shipments/").permitAll();
+
                     // Test endpoints
                     request.requestMatchers("/test").authenticated();
                     request.requestMatchers("/test/no-auth").permitAll();

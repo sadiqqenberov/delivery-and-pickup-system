@@ -23,5 +23,4 @@ public interface ShipmentService {
 
     Void deleteShipment(int id);
 
-
 }

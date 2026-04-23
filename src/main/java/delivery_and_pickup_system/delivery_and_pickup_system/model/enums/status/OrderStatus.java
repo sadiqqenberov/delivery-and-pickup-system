@@ -2,6 +2,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.ResponseMessage;
 
 @AllArgsConstructor
 public enum OrderStatus implements ResponseMessage {
@@ -21,7 +22,10 @@ public enum OrderStatus implements ResponseMessage {
     RETURN_IN_PROGRESS("Geri qaytarılır","Sifariş geri qaytarılma prosesindədir", HttpStatus.OK),
     RETURNED("Geri qaytarıldı","Sifariş geri qaytarıldı", HttpStatus.OK),
     CANCELLED("Ləğv edildi","Sifariş ləğv edildi", HttpStatus.BAD_REQUEST),
-    DAMAGED("Zədələndi","Sifariş zədələnmişdir", HttpStatus.BAD_REQUEST);
+    DAMAGED("Zədələndi","Sifariş zədələnmişdir", HttpStatus.BAD_REQUEST),
+    DELETED("Silindi","Sifariş silindi", HttpStatus.OK),
+    UPDATE_STATUS("Status dəyişdi","Sifarişin statusu dəyişdi", HttpStatus.OK),
+    ;
 
     private final String key;
     private final String message;

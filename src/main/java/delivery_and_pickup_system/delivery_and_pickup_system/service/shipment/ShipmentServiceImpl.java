@@ -10,6 +10,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentResponseDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
+import delivery_and_pickup_system.delivery_and_pickup_system.repository.StatusHistoryRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,10 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final ShipmentRepository shipmentRepository;
     private final ShipmentMapper shipmentMapper;
     private final UserRepository userRepository;
+    private final StatusHistoryRepository statusHistoryRepository;
+
 
     @Override
-    //todo:burada created resonse bodyda key and messages
     //todo: custom exception
     public ShipmentResponseDto createShipment(ShipmentDto dto) {
 
@@ -38,7 +40,7 @@ public class ShipmentServiceImpl implements ShipmentService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Shipment shipment = new Shipment();
-        shipment.setTrackingNumber(dto.getTrackingNumber());
+        shipment.setTrackingNumber(Math.toIntExact(dto.getTrackingNumber()));
         shipment.setSenderName(dto.getSenderName());
         shipment.setSenderPhone(dto.getSenderPhone());
         shipment.setReceiverName(dto.getReceiverName());
@@ -116,4 +118,5 @@ public class ShipmentServiceImpl implements ShipmentService {
         shipmentRepository.deleteById(id);
         return null;
     }
+
 }
