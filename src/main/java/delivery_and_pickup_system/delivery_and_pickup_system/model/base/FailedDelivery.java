@@ -21,6 +21,5 @@
         @JoinColumn(name = "shipment_id")
         Shipment shipment;
 
-
         String note;
     }

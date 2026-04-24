@@ -28,19 +28,20 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final ShipmentRepository shipmentRepository;
     private final ShipmentMapper shipmentMapper;
     private final UserRepository userRepository;
-    private final StatusHistoryRepository statusHistoryRepository;
 
 
+    //todo:custom exception
     @Override
-    //todo: custom exception
     public ShipmentResponseDto createShipment(ShipmentDto dto) {
 
         User user = userRepository.findByNameAndSurname(
-                dto.getCreatedByName(), dto.getCreatedBySurname())
+                        dto.getCreatedByName(), dto.getCreatedBySurname())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Shipment shipment = new Shipment();
-        shipment.setTrackingNumber(Math.toIntExact(dto.getTrackingNumber()));
+
+        shipment.setTrackingNumber(String.valueOf(System.currentTimeMillis()));
+
         shipment.setSenderName(dto.getSenderName());
         shipment.setSenderPhone(dto.getSenderPhone());
         shipment.setReceiverName(dto.getReceiverName());
@@ -74,7 +75,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     public MappingJacksonValue findAll() {
         List<Shipment> shipments = shipmentRepository.findAll();
 
-        List<ShipmentDto> shipmentDtos = shipmentMapper.toDtoList(shipments);
+        List<ShipmentResponseDto> shipmentDtos = shipmentMapper.toDtoList(shipments);
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
                 .filterOutAllExcept("trackingNumber", "senderName", "senderPhone", "receiverName", "receiverPhone");
@@ -93,7 +94,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public Optional<Shipment> findByTrackingNumber(Integer trackingNumber) {
+    public Optional<Shipment> findByTrackingNumber(String trackingNumber) {
         return shipmentRepository.findByTrackingNumber(trackingNumber);
     }
 

@@ -125,6 +125,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    //todo: custom exception
     @Override
     public UserDto getCurrentUser() {
 

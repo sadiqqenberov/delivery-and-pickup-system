@@ -23,6 +23,7 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
     private final StatusHistoryRepository historyRepository;
     private final StatusHistoryMapper statusHistoryMapper;
 
+    //todo:custom exception
     @Override
     public void updateShipmentStatus(Integer id, StatusUpdateRequest request) {
         Shipment shipment = shipmentRepository.findById(id)
@@ -40,6 +41,7 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
         historyRepository.save(history);
     }
 
+    //todo:custom exception
     @Override
     public List<StatusHistory> getShipmentStatusHistory(Integer shipmentId) {
         if (!shipmentRepository.existsById(shipmentId)) {
@@ -49,10 +51,11 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
         return historyRepository.findAllByShipmentIdOrderByChangedAtDesc(shipmentId);
     }
 
+    //todo:custom exception
     @Override
-    public TrackingResponse getTrackingInfo(Integer trackingNumber) {
+    public TrackingResponse getTrackingInfo(String trackingNumber) {
         Shipment shipment = shipmentRepository.findByTrackingNumber(trackingNumber)
-                .orElseThrow(() -> new RuntimeException("Bu nömrə ilə bağlama tapılmadı: " + trackingNumber));
+                .orElseThrow(() -> new RuntimeException("Bu nömrə ilə badname tapılmadı: " + trackingNumber));
 
         List<StatusHistory> historyList = historyRepository
                 .findAllByShipmentIdOrderByChangedAtDesc(shipment.getId());

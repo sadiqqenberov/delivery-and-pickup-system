@@ -46,7 +46,7 @@ public class ShipmentController {
     }
 
     @GetMapping("/tracking/{trackingNumber}")
-    public Optional<Shipment> findTracking(@PathVariable Integer trackintNumber) {
+    public Optional<Shipment> findTracking(@PathVariable String trackintNumber) {
         return shipmentService.findByTrackingNumber(trackintNumber);
     }
 

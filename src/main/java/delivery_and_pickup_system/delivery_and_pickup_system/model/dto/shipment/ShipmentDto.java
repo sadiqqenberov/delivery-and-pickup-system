@@ -1,12 +1,12 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
 public class ShipmentDto {
 
-    private Integer trackingNumber;
     private String senderName;
     private String senderPhone;
     private String receiverName;
@@ -14,6 +14,7 @@ public class ShipmentDto {
     private String deliveryAddress;
     private Double weight;
     private BigDecimal price;
+
     private String createdByName;
     private String createdBySurname;
 }

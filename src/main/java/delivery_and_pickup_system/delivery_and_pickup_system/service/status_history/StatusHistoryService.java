@@ -12,5 +12,5 @@ public interface StatusHistoryService {
 
     List<StatusHistory> getShipmentStatusHistory(Integer shipmentId);
 
-    TrackingResponse getTrackingInfo(Integer trackingNumber);
+    TrackingResponse getTrackingInfo(String trackingNumber);
 }

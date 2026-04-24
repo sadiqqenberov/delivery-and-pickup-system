@@ -37,12 +37,10 @@ public class StatusHistoryController {
 
     @PreAuthorize("hasAnyAuthority('CUSTOMER','OPERATOR')")
     @GetMapping("/{trackingNumber}")
-    public ResponseEntity<TrackingResponse> getTrackingDetails(@PathVariable Integer trackingNumber) {
+    public ResponseEntity<TrackingResponse> getTrackingDetails(@PathVariable String trackingNumber) {
         return ResponseEntity.ok(statusHistoryService.getTrackingInfo(trackingNumber));
     }
 
     //todo: bunun mentiqini basa dusmemisem nedi ne deyil
     //@PostMapping("/tracking/events")
-
-
 }

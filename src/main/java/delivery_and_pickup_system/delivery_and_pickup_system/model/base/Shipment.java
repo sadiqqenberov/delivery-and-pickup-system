@@ -20,7 +20,8 @@ public class Shipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    Integer trackingNumber;
+    String trackingNumber;
+
     String senderName;
     String senderPhone;
     String receiverName;
@@ -28,11 +29,11 @@ public class Shipment {
     String deliveryAddress;
     Double weight;
     BigDecimal price;
+
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
     User createdBy;
-
 }
