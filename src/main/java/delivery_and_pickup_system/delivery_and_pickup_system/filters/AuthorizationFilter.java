@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.PREFIX;
 
@@ -28,25 +27,38 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private final AuthBusinessService authBusinessService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         try {
-            if (Objects.nonNull(token) && token.startsWith(PREFIX)) {
-                authBusinessService.setAuthentication(
-                        accessTokenManager.getEmail(
-                                token.substring(7)
-                        )
-                );
-            }
-        } catch (BaseException | JwtException ex) {
-            log.warn(ex.getMessage());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+            if (header != null && header.startsWith(PREFIX)) {
 
-        filterChain.doFilter(request, response);
+                String token = header.substring(PREFIX.length());
+
+                String email = accessTokenManager.getEmail(token);
+
+                authBusinessService.setAuthentication(email);
+            }
+
+            filterChain.doFilter(request, response);
+
+        } catch (JwtException | BaseException ex) {
+
+            log.warn("Invalid JWT: {}", ex.getMessage());
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+
+        } catch (Exception ex) {
+
+            log.error("Unexpected auth error", ex);
+
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 }

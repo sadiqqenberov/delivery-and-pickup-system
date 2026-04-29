@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.EMAIL_KEY;
+import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.ID_KEY;
+
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +54,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public AssignmentDto findById(int id) {
         Assignment assignment = assignmentRepository.findById(id)
-                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), "id", id));
+                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), ID_KEY, id));
 
         return assignmentMapper.toDto(assignment);
     }
@@ -82,7 +85,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), "email", email));
+                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), EMAIL_KEY, email));
 
         return assignmentRepository.findAllByCourierId(user.getId());
     }

@@ -12,7 +12,7 @@ public class ShipmentDto {
     private String receiverName;
     private String receiverPhone;
     private String deliveryAddress;
-    private Double weight;
+    private BigDecimal weight;
     private BigDecimal price;
 
     private String createdByName;

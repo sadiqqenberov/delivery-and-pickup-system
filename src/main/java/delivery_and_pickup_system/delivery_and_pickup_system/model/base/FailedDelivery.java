@@ -1,25 +1,27 @@
-    package delivery_and_pickup_system.delivery_and_pickup_system.model.base;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.base;
 
-    import jakarta.persistence.*;
-    import lombok.*;
-    import lombok.experimental.FieldDefaults;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-    @Entity
-    @Table(name = "failed_delivery")
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @Builder
-    public class FailedDelivery {
+@Entity
+@Table(name = "failed_delivery")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
+public class FailedDelivery {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
 
-        @ManyToOne
-        @JoinColumn(name = "shipment_id")
-        Shipment shipment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipment_id", nullable = false)
+    Shipment shipment;
 
-        String note;
-    }
+    @Column(nullable = false, length = 1000)
+    String note;
+}

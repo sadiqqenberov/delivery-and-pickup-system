@@ -26,7 +26,7 @@ public class ReturnServiceImpl implements ReturnService {
     @Override
     public Return initiateReturn(ReturnRequestDTO requestDTO) {
         Shipment shipment = shipmentRepository.findById(requestDTO.getShipmentId())
-                .orElseThrow(() -> BaseException.shipmentNotFound());
+                .orElseThrow(BaseException::shipmentNotFound);
 
         Return newReturn = Return.builder()
                 .shipment(shipment)

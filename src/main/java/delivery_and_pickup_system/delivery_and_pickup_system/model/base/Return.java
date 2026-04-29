@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "returns")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Return {
@@ -20,15 +21,16 @@ public class Return {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "shipment_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipment_id", nullable = false, unique = true)
     Shipment shipment;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     OrderStatus status;
 
+    @Column(length = 1000)
     String reason;
 
     LocalDateTime returnedAt;
 }
-

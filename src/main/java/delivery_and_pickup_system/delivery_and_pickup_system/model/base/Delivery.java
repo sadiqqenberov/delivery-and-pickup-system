@@ -8,9 +8,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "deliveries")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Delivery {
@@ -19,16 +20,20 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "shipment_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipment_id", nullable = false, unique = true)
     Shipment shipment;
 
-    @ManyToOne
-    @JoinColumn(name = "courier_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "courier_id", nullable = false)
     User courier;
 
+    @Column(name = "started_at")
     LocalDateTime startedAt;
+
+    @Column(name = "delivered_at")
     LocalDateTime deliveredAt;
 
-    Boolean success;
+    @Column(nullable = false)
+    Boolean success = false;
 }

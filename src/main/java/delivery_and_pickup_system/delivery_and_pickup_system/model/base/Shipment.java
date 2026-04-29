@@ -9,9 +9,10 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "shipments")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class Shipment {
@@ -20,21 +21,35 @@ public class Shipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Column(nullable = false, unique = true, length = 50)
     String trackingNumber;
 
+    @Column(nullable = false, length = 100)
     String senderName;
+
+    @Column(nullable = false, length = 30)
     String senderPhone;
+
+    @Column(nullable = false, length = 100)
     String receiverName;
+
+    @Column(nullable = false, length = 30)
     String receiverPhone;
+
+    @Column(nullable = false, length = 255)
     String deliveryAddress;
-    Double weight;
+
+    @Column(nullable = false)
+    BigDecimal weight;
+
+    @Column(nullable = false)
     BigDecimal price;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by")
+    @JoinColumn(name = "created_by", nullable = false)
     User createdBy;
-
 }

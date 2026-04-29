@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "status_history")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class StatusHistory {
@@ -20,14 +21,17 @@ public class StatusHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "shipment_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipment_id", nullable = false)
     Shipment shipment;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     OrderStatus status;
 
+    @Column(nullable = false)
     LocalDateTime changedAt;
 
+    @Column(length = 1000)
     String note;
 }

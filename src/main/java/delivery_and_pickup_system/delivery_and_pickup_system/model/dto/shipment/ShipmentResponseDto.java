@@ -13,7 +13,7 @@ public class ShipmentResponseDto {
 
     private String senderName;
     private String receiverName;
-    private Double weight;
+    private BigDecimal weight;
     private BigDecimal price;
 
     private String statusKey;

@@ -7,23 +7,34 @@ import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "pricing_rules")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class PricingRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Integer id;
 
+    @Column(nullable = false)
     Double maxWeight;
+
+    @Column(nullable = false)
     Double maxDistance;
+
+    @Column(nullable = false)
     Double basePrice;
+
+    @Column(nullable = false)
     Double extraPricePerKg;
+
+    @Column(nullable = false)
     Double extraPricePerKm;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "standard_delivery")
-    private RuleDelivery standardDelivery;
+    @Column(name = "standard_delivery", nullable = false)
+    RuleDelivery standardDelivery;
 }

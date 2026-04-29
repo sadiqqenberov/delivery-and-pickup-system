@@ -8,28 +8,34 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "proof_of_delivery")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ProofOfDelivery {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    Integer id;
 
-    private String receivedBy;
+    @Column(length = 255)
+    String receivedBy;
 
-    private String signatureUrl;
+    @Column(length = 500)
+    String signatureUrl;
 
-    private String photoUrl;
+    @Column(length = 500)
+    String photoUrl;
 
-    private String otpCode;
+    // Security note: ideally hashed or temporary token
+    @Column(length = 10)
+    String otpCode;
 
-    private LocalDateTime confirmedAt;
+    LocalDateTime confirmedAt;
 
-    @OneToOne
-    @JoinColumn(name = "shipment_id")
-    private Shipment shipment;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipment_id", nullable = false, unique = true)
+    Shipment shipment;
 }

@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findFirstByNameAndSurname(String name, String surname);
 
+    @Query("select u from User u join fetch u.role where u.email = :email")
+    Optional<User> findByEmailWithRole(@Param("email") String email);
+
 }

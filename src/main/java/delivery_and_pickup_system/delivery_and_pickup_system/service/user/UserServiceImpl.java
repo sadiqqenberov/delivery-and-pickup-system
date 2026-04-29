@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.EMAIL_KEY;
 
 @Service
 @Slf4j
@@ -35,8 +36,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), "email", email));
+        return userRepository.findByEmailWithRole(email)
+                .orElseThrow(() ->
+                        BaseException.notFound(User.class.getSimpleName(), EMAIL_KEY, email)
+                );
     }
 
     @Override
@@ -55,9 +58,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setAddress(userDto.getAddress());
-
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
         user.setRole(role);
 
         return userRepository.save(user);
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MappingJacksonValue findAll() {
+
         List<User> users = userRepository.findAll();
 
         List<UserDto> userDtos = userMapper.toDtoList(users);
@@ -78,7 +80,6 @@ public class UserServiceImpl implements UserService {
         value.setFilters(provider);
 
         return value;
-
     }
 
     @Override
@@ -88,35 +89,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(int id, UserDto userDto) {
-        User user = userRepository.findById(id);
+        User user = findById(id);
 
         userMapper.updateUserFromDto(userDto, user);
 
-        User userUpdated = userRepository.save(user);
-        return userMapper.toDto(userUpdated);
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
     public UserStatusDto updateStatus(int id, UserStatusDto userStatusDto) {
-        User user = userRepository.findById(id);
+        User user = findById(id);
 
         userMapper.updateUserStatusFromDto(userStatusDto, user);
 
-        User userUpdated = userRepository.save(user);
-
-        return userMapper.toDtoUser(userUpdated);
-
+        return userMapper.toDtoUser(userRepository.save(user));
     }
 
     @Override
     public UserRoleDto updateUserRole(int id, UserRoleDto userRoleDto) {
-        User user = userRepository.findById(id);
+        User user = findById(id);
 
         userMapper.updateUserRoleFromDto(userRoleDto, user);
 
-        User userUpdated = userRepository.save(user);
-
-        return userMapper.toDtoUserRole(userUpdated);
+        return userMapper.toDtoUserRole(userRepository.save(user));
     }
 
     @Override
@@ -124,8 +119,6 @@ public class UserServiceImpl implements UserService {
         List<User> couriers = userRepository.findAllCouriers(3L);
         return userMapper.toDtoList(couriers);
     }
-
-
 
     @Override
     public UserDto getCurrentUser() {
@@ -137,11 +130,11 @@ public class UserServiceImpl implements UserService {
 
         String email = userDetails.getUsername();
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), "id", email));
+        User user = userRepository.findByEmailWithRole(email)
+                .orElseThrow(() ->
+                        BaseException.notFound(User.class.getSimpleName(), EMAIL_KEY, email)
+                );
 
         return userMapper.toDto(user);
     }
-
-
 }
