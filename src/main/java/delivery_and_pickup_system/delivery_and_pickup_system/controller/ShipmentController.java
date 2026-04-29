@@ -9,11 +9,12 @@ import delivery_and_pickup_system.delivery_and_pickup_system.service.shipment.Sh
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/shipment")
@@ -46,8 +47,10 @@ public class ShipmentController {
     }
 
     @GetMapping("/tracking/{trackingNumber}")
-    public Optional<Shipment> findTracking(@PathVariable String trackintNumber) {
-        return shipmentService.findByTrackingNumber(trackintNumber);
+    public ResponseEntity<ShipmentResponseDto> findTracking(@PathVariable String trackingNumber) {
+        return shipmentService.findByTrackingNumber(trackingNumber)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")

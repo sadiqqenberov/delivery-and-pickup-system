@@ -1,15 +1,13 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.security;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.mapper.UserMapper;
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.security.LoggedInUserDetails;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.RoleRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
@@ -38,7 +36,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
+
 
     @Override
     public LoginResponse login(LoginPayload payload) {
@@ -52,15 +50,14 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     @Override
     public LoginResponse refresh(@RequestBody RefreshTokenPayload payload) {
 
-        return prepareLoginResponse(refreshTokenManager.getEmail(
-                        payload.getRefreshToken()),
-                payload.isRememberMe());
+        return prepareLoginResponse(refreshTokenManager.getEmail(payload.getRefreshToken()), payload.isRememberMe());
     }
 
     @Override
-    public void logout() {
+    public Void logout() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("{} user logout succeed", userDetails.getUsername());
+        log.info("{} user logout success", userDetails.getUsername());
+        return null;
     }
 
     @Override
@@ -68,15 +65,14 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities())
-        );
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
     }
 
     @Override
     public User signUp(SignUpPayload payload) {
 
         Role role = roleRepository.findByRoleName("CUSTOMER")
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(BaseException::roleNotFound);
 
         User user = new User();
 
@@ -97,9 +93,10 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
 
     private void authenticate(LoginPayload payload) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(payload.getEmail(), payload.getPassword()));
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(payload.getEmail(), payload.getPassword()));
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Authentication failed", e);
+            throw BaseException.unexpected(e);
         }
     }
 
@@ -107,13 +104,14 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
         User user = userService.getByEmail(email);
 
         return LoginResponse.builder()
-                .accessToken(accessTokenManager.generate(user))
-                .refreshToken(refreshTokenManager.generate(
-                        RefreshTokenDto.builder()
+                .accessToken(accessTokenManager
+                        .generate(user))
+                .refreshToken(refreshTokenManager
+                        .generate(RefreshTokenDto
+                                .builder()
                                 .user(user)
                                 .rememberMe(rememberMe)
-                                .build()
-                ))
+                                .build()))
                 .build();
     }
 }

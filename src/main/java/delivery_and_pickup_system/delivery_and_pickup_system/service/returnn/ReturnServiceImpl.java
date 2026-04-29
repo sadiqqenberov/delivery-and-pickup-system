@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.returnn;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Return;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnRequestDTO;
@@ -25,7 +26,7 @@ public class ReturnServiceImpl implements ReturnService {
     @Override
     public Return initiateReturn(ReturnRequestDTO requestDTO) {
         Shipment shipment = shipmentRepository.findById(requestDTO.getShipmentId())
-                .orElseThrow(() -> new RuntimeException("Shipment tapılmadı!"));
+                .orElseThrow(() -> BaseException.shipmentNotFound());
 
         Return newReturn = Return.builder()
                 .shipment(shipment)
@@ -40,7 +41,7 @@ public class ReturnServiceImpl implements ReturnService {
     @Override
     public Return approveReturn(Integer id) {
         Return returnOrder = returnRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Geri qaytarma sorğusu tapılmadı: " + id));
+                .orElseThrow(() -> BaseException.returnRequestNotFound(id));
 
         returnOrder.setStatus(OrderStatus.RETURNED);
 
@@ -54,10 +55,10 @@ public class ReturnServiceImpl implements ReturnService {
     @Override
     public Return completeReturn(Integer id) {
         Return returnOrder = returnRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Geri qaytarma prosesi tapılmadı: " + id));
+                .orElseThrow(() -> BaseException.returnRequestNotFound(id));
 
         if (returnOrder.getStatus() == OrderStatus.CANCELLED) {
-            throw new RuntimeException("Ləğv edilmiş bir geri qaytarmanı tamamlamaq olmaz!");
+            throw BaseException.cancelledReturnCannotCompleted();
         }
 
         returnOrder.setStatus(OrderStatus.COMPLETED);
@@ -74,7 +75,7 @@ public class ReturnServiceImpl implements ReturnService {
     @Override
     public Return getReturnById(Integer id) {
         return returnRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Geri qaytarma tapılmadı: " + id));
+                .orElseThrow(() -> BaseException.returnRequestNotFound(id));
     }
 
     @Override

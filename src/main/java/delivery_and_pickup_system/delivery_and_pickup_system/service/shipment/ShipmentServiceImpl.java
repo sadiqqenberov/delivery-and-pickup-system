@@ -1,8 +1,10 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.shipment;
 
+import com.fasterxml.jackson.databind.introspect.DefaultAccessorNamingStrategy;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.ShipmentMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
@@ -30,13 +32,12 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final UserRepository userRepository;
 
 
-    //todo:custom exception
     @Override
     public ShipmentResponseDto createShipment(ShipmentDto dto) {
 
-        User user = userRepository.findByNameAndSurname(
+        User user = userRepository.findFirstByNameAndSurname(
                         dto.getCreatedByName(), dto.getCreatedBySurname())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(BaseException::notFound);
 
         Shipment shipment = new Shipment();
 
@@ -94,8 +95,9 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public Optional<Shipment> findByTrackingNumber(String trackingNumber) {
-        return shipmentRepository.findByTrackingNumber(trackingNumber);
+    public Optional<ShipmentResponseDto> findByTrackingNumber(String trackingNumber) {
+        return shipmentRepository.findByTrackingNumber(trackingNumber)
+                .map(shipmentMapper::toResponseDto);
     }
 
     @Override
@@ -109,6 +111,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     }
 
+    //todo:bunu yaz
     @Override
     public Shipment cancelShipment(int id) {
         return null;

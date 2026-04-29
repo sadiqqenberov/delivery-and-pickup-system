@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -42,10 +43,10 @@ public class UserServiceImpl implements UserService {
     public User creatUser(UserDto userDto) {
 
         Role role = roleRepository.findByRoleName(userDto.getRole())
-                .orElseThrow(() -> new RuntimeException("Role tapılmadı: " + userDto.getRole()));
+                .orElseThrow(BaseException::roleNotFound);
 
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new RuntimeException("User artıq mövcuddur");
+            throw BaseException.userExists();
         }
 
         User user = new User();
@@ -125,7 +126,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    //todo: custom exception
+
     @Override
     public UserDto getCurrentUser() {
 
@@ -137,7 +138,7 @@ public class UserServiceImpl implements UserService {
         String email = userDetails.getUsername();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), "id", email));
 
         return userMapper.toDto(user);
     }

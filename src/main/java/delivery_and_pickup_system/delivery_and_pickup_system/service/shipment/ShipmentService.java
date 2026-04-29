@@ -15,7 +15,7 @@ public interface ShipmentService {
 
     Shipment findById(int id);
 
-    Optional<Shipment> findByTrackingNumber (String trackingNumber);
+    Optional<ShipmentResponseDto> findByTrackingNumber(String trackingNumber);
 
     ShipmentDto update(int id, ShipmentDto shipmentDto);
 

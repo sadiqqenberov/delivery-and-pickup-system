@@ -29,6 +29,7 @@ public final class Meta {
         return of(responseMessage.key(), responseMessage.message());
     }
 
+
     public static Meta of(BaseException ex) {
         if (ex.getResponseMessage().equals(NOT_FOUND)) {
             NotFoundExceptionType notFoundData = ex.getNotFoundData();

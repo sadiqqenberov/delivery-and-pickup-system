@@ -15,6 +15,12 @@ import java.util.List;
 )
 public interface ShipmentMapper {
 
+
+    @Mapping(target = "createdByName", source = "createdBy.name")
+    @Mapping(target = "statusKey", source = "status")
+    ShipmentResponseDto toResponseDto(Shipment shipment);
+
+
     List<ShipmentResponseDto> toDtoList(List<Shipment> shipments);
 
     @Mapping(target = "createdByName", source = "createdBy.name")

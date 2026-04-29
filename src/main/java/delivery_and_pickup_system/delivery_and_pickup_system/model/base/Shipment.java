@@ -37,7 +37,4 @@ public class Shipment {
     @JoinColumn(name = "created_by")
     User createdBy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    Customer customer;
 }

@@ -43,7 +43,7 @@ public class UserController {
         return userService.findById(id);
     }
 
-        @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update/{id}")
     public UserDto updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
         return userService.update(id,userDto);

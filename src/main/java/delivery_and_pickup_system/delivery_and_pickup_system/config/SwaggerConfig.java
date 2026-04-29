@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
 
 
-    // todo: fill real data
     @Bean
     public OpenAPI myOpenAPI() {
 

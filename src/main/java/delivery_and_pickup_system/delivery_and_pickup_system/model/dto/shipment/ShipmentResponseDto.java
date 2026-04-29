@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-@JsonFilter("shipments")
+//@JsonFilter("shipments")
 public class ShipmentResponseDto {
 
     private Integer id;

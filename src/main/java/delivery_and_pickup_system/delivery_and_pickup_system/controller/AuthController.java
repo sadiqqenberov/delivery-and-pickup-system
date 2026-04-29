@@ -4,15 +4,16 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.auth.LoginResponse;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.security.AuthBusinessService;
-import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/token/refresh")
-    public BaseResponse<LoginResponse> refresh(@RequestBody RefreshTokenPayload payload){
+    public BaseResponse<LoginResponse> refresh(@RequestBody RefreshTokenPayload payload) {
         return BaseResponse.success(authBusinessService.refresh(payload));
     }
 
@@ -40,7 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-up")
-    public BaseResponse <User> sigUp(@RequestBody SignUpPayload payload) {
+    public BaseResponse<User> sigUp(@RequestBody SignUpPayload payload) {
         authBusinessService.signUp(payload);
         return BaseResponse.success();
     }

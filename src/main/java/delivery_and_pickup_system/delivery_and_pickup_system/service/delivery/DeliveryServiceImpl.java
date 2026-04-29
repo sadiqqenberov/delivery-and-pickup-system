@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.delivery;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.DeliveryMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Delivery;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.FailedDelivery;
@@ -27,15 +28,14 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final DeliveryMapper deliveryMapper;
     private final FailedDeliveryRepository failedDeliveryRepository;
 
-    //todo: custom exception
     @Override
     public DeliveryResponseDto startDelivery(StartDeliveryRequestDto dto) {
 
         Shipment shipment = shipmentRepository.findById(dto.getShipmentId())
-                .orElseThrow(() -> new RuntimeException("Shipment tapılmadı"));
+                .orElseThrow(BaseException::shipmentNotFound);
 
         User courier = userRepository.findById(dto.getCourierId())
-                .orElseThrow(() -> new RuntimeException("Courier tapılmadı"));
+                .orElseThrow(BaseException::courierNotFound);
 
         Delivery delivery = new Delivery();
         delivery.setShipment(shipment);
@@ -48,15 +48,15 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryMapper.toDto(saved);
     }
 
-    //todo: custom exception
+
     @Override
     public DeliveryResponseDto confirmDelivery(ConfirmDeliveryRequestDto dto) {
 
         Delivery delivery = deliveryRepository.findById(dto.getDeliveryId())
-                .orElseThrow(() -> new RuntimeException("Delivery tapılmadı"));
+                .orElseThrow(BaseException::deliveryNotFound);
 
         if (Boolean.TRUE.equals(delivery.getSuccess())) {
-            throw new RuntimeException("Delivery artıq təsdiqlənib");
+            throw BaseException.deliveryConfirmed();
         }
 
         delivery.setDeliveredAt(LocalDateTime.now());
@@ -71,7 +71,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     public FailedDeliveryResponseDto failDelivery(FailDeliveryRequestDto dto) {
 
         Shipment shipment = shipmentRepository.findById(dto.getShipmentId())
-                .orElseThrow(() -> new RuntimeException("Shipment tapılmadı"));
+                .orElseThrow(BaseException::shipmentNotFound);
 
         FailedDelivery failed = FailedDelivery.builder()
                 .shipment(shipment)
@@ -87,10 +87,10 @@ public class DeliveryServiceImpl implements DeliveryService {
     public DeliveryResponseDto rescheduleDelivery(RescheduleDeliveryRequestDto dto) {
 
         Delivery delivery = deliveryRepository.findById(dto.getDeliveryId())
-                .orElseThrow(() -> new RuntimeException("Delivery tapılmadı"));
+                .orElseThrow(BaseException::deliveryNotFound);
 
         if (Boolean.TRUE.equals(delivery.getSuccess())) {
-            throw new RuntimeException("Artıq tamamlanmış delivery reschedule edilə bilməz");
+            throw BaseException.deliveryConfirmed();
         }
 
         delivery.setStartedAt(dto.getNewStartTime());
@@ -104,7 +104,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     public DeliveryResponseDto getDeliveryById(Integer id) {
 
         Delivery delivery = deliveryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Delivery tapılmadı"));
+                .orElseThrow(BaseException::deliveryNotFound);
 
         return deliveryMapper.toDto(delivery);
     }

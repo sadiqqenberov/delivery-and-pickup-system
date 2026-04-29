@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/returns")
+@RequestMapping("/returns")
 @RequiredArgsConstructor
 public class ReturnController {
 
@@ -24,21 +24,21 @@ public class ReturnController {
     public BaseResponse<?> initiateReturn(@RequestBody ReturnRequestDTO requestDTO) {
 
         returnService.initiateReturn(requestDTO);
-        return BaseResponse.success(OrderStatus.RETURN_REQUESTED);
+        return BaseResponse.successes(OrderStatus.RETURN_REQUESTED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @PostMapping("/{id}/approve")
     public BaseResponse<Return> approveReturn(@PathVariable Integer id) {
         returnService.approveReturn(id);
-        return (BaseResponse<Return>) BaseResponse.success(OrderStatus.RETURN_IN_PROGRESS);
+        return (BaseResponse<Return>) BaseResponse.successes(OrderStatus.RETURN_IN_PROGRESS);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @PostMapping("/{id}/complete")
     public BaseResponse<Return> completeReturn(@PathVariable Integer id) {
         returnService.completeReturn(id);
-        return (BaseResponse<Return>) BaseResponse.success(OrderStatus.RETURNED);
+        return (BaseResponse<Return>) BaseResponse.successes(OrderStatus.RETURNED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")

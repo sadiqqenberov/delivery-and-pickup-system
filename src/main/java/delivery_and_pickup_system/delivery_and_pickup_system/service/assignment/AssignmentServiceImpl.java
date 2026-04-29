@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.assignment;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.AssignmentMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Assignment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
@@ -31,10 +32,10 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public AssignmentDto createAssignment(AssignmentDto assignmentDto) {
         Shipment shipment = shipmentRepository.findById(assignmentDto.getShipmentId())
-                .orElseThrow(() -> new RuntimeException("Shipment tapılmadı"));
+                .orElseThrow(BaseException::shipmentNotFound);
 
         User courier = userRepository.findById(assignmentDto.getCourierId())
-                .orElseThrow(() -> new RuntimeException("Courier tapılmadı"));
+                .orElseThrow(BaseException::shipmentNotFound);
 
         Assignment assignment = Assignment.builder()
                 .shipment(shipment)
@@ -50,7 +51,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public AssignmentDto findById(int id) {
         Assignment assignment = assignmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not found"));
+                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), "id", id));
 
         return assignmentMapper.toDto(assignment);
     }
@@ -73,7 +74,6 @@ public class AssignmentServiceImpl implements AssignmentService {
         );
     }
 
-    //todo: bura baxarsan custom exception
     @Override
     public List<Assignment> getMyAssignments() {
 
@@ -82,7 +82,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), "email", email));
 
         return assignmentRepository.findAllByCourierId(user.getId());
     }

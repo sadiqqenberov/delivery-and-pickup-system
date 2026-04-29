@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.response.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.ResponseMessage;
@@ -13,6 +14,7 @@ import static delivery_and_pickup_system.delivery_and_pickup_system.model.respon
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BaseResponse<T> {
     HttpStatus status;
     Meta meta;
@@ -28,7 +30,7 @@ public class BaseResponse<T> {
     }
 
     public static <T> BaseResponse<T> success() {
-        return (BaseResponse<T>) success(null);
+        return (BaseResponse<T>) successes(null);
     }
 
     public static BaseResponse<?> error(BaseException ex) {
@@ -38,6 +40,11 @@ public class BaseResponse<T> {
                 .build();
     }
     public static <T> BaseResponse<T> success(ResponseMessage responseMessage, T data) {
+
+        if (responseMessage == null) {
+            responseMessage = SUCCESS;
+        }
+
         return BaseResponse.<T>builder()
                 .status(responseMessage.status())
                 .data(data)
@@ -45,7 +52,7 @@ public class BaseResponse<T> {
                 .build();
     }
 
-    public static BaseResponse<?> success(ResponseMessage responseMessage) {
+    public static BaseResponse<?> successes(ResponseMessage responseMessage) {
         return success(responseMessage, null);
     }
 

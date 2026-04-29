@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.proof_of_delivery;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.ProofOfDeliveryMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.ProofOfDelivery;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryRequestDTO;
@@ -32,7 +33,7 @@ public class ProofOfDeliveryServiceImpl implements ProofOfDeliveryService {
     @Override
     public ProofOfDeliveryResponseDTO getProofByShipmentId(Integer shipmentId) {
         ProofOfDelivery proof = repository.findByShipmentId(shipmentId)
-                .orElseThrow(() -> new RuntimeException("Bu shipment üçün təhvil məlumatı tapılmadı: " + shipmentId));
+                .orElseThrow(BaseException::shipmentNotFound);
 
         return mapper.toResponseDto(proof);
     }

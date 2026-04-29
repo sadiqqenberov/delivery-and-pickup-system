@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.status_history;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.StatusHistoryMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.StatusHistory;
@@ -23,11 +24,11 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
     private final StatusHistoryRepository historyRepository;
     private final StatusHistoryMapper statusHistoryMapper;
 
-    //todo:custom exception
+
     @Override
     public void updateShipmentStatus(Integer id, StatusUpdateRequest request) {
         Shipment shipment = shipmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Shipment not found with id: " + id));
+                .orElseThrow(() -> BaseException.shipmentNotFound(id));
 
         shipment.setStatus(request.getStatus());
         shipmentRepository.save(shipment);
@@ -41,21 +42,19 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
         historyRepository.save(history);
     }
 
-    //todo:custom exception
     @Override
     public List<StatusHistory> getShipmentStatusHistory(Integer shipmentId) {
         if (!shipmentRepository.existsById(shipmentId)) {
-            throw new RuntimeException("Shipment tapılmadı: ID " + shipmentId);
+            throw BaseException.shipmentNotFound(shipmentId);
         }
 
         return historyRepository.findAllByShipmentIdOrderByChangedAtDesc(shipmentId);
     }
 
-    //todo:custom exception
     @Override
     public TrackingResponse getTrackingInfo(String trackingNumber) {
         Shipment shipment = shipmentRepository.findByTrackingNumber(trackingNumber)
-                .orElseThrow(() -> new RuntimeException("Bu nömrə ilə badname tapılmadı: " + trackingNumber));
+                .orElseThrow(BaseException::trackingNumberNotFound);
 
         List<StatusHistory> historyList = historyRepository
                 .findAllByShipmentIdOrderByChangedAtDesc(shipment.getId());

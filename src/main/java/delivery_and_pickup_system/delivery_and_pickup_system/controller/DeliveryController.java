@@ -24,7 +24,7 @@ public class DeliveryController {
 
          deliveryService.startDelivery(dto);
 
-         return (BaseResponse<DeliveryResponseDto>) BaseResponse.success(OrderStatus.IN_TRANSIT);
+         return (BaseResponse<DeliveryResponseDto>) BaseResponse.successes(OrderStatus.IN_TRANSIT);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','COURIER')")
@@ -32,7 +32,7 @@ public class DeliveryController {
     public BaseResponse<DeliveryResponseDto> confirm(@RequestBody ConfirmDeliveryRequestDto dto) {
         deliveryService.confirmDelivery(dto);
 
-        return (BaseResponse<DeliveryResponseDto>) BaseResponse.success(OrderStatus.DELIVERED);
+        return (BaseResponse<DeliveryResponseDto>) BaseResponse.successes(OrderStatus.DELIVERED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','COURIER')")
@@ -40,7 +40,7 @@ public class DeliveryController {
     public BaseResponse<FailedDeliveryResponseDto> fail(@RequestBody FailDeliveryRequestDto dto) {
         deliveryService.failDelivery(dto);
 
-        return (BaseResponse<FailedDeliveryResponseDto>) BaseResponse.success(OrderStatus.DELIVERY_ATTEMPT_FAILED);
+        return (BaseResponse<FailedDeliveryResponseDto>) BaseResponse.successes(OrderStatus.DELIVERY_ATTEMPT_FAILED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
