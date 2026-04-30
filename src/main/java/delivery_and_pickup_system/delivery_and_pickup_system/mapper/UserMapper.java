@@ -19,26 +19,17 @@ public interface UserMapper {
 
     UserDto toDto(User user);
 
-    List<UserDto> toDtoList(List<User> users);
-
-    User toEntity(UserDto dto);
-
     default String map(Role role) {
         return role != null ? role.getRoleName() : null;
     }
 
-    default Role map(String roleName) {
-        if (roleName == null) return null;
-
-        Role role = new Role();
-        role.setRoleName(roleName);
-        return role;
-    }
+    List<UserDto> toDtoList(List<User> users);
 
     UserStatusDto toDtoUser(User user);
 
     UserRoleDto toDtoUserRole(User user);
 
+    @Mapping(target = "role", ignore = true)
     void updateUserFromDto(UserDto dto, @MappingTarget User user);
 
     void updateUserStatusFromDto(UserStatusDto dto, @MappingTarget User user);

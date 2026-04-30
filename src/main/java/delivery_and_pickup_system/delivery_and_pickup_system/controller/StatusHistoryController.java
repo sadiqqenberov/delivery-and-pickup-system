@@ -1,6 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.model.base.StatusHistory;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusHistoryDTO;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusUpdateRequest;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.TrackingResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
@@ -9,7 +9,6 @@ import delivery_and_pickup_system.delivery_and_pickup_system.service.status_hist
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +30,14 @@ public class StatusHistoryController {
     }
 
     @GetMapping("/shipments/{id}/status-history")
-    public List<StatusHistory> getStatusHistory(@PathVariable Integer id) {
-        return  statusHistoryService.getShipmentStatusHistory(id);
+    public List<StatusHistoryDTO> getStatusHistory(@PathVariable Integer id) {
+        return statusHistoryService.getShipmentStatusHistory(id);
     }
 
     @PreAuthorize("hasAnyAuthority('CUSTOMER','OPERATOR')")
     @GetMapping("/{trackingNumber}")
-    public ResponseEntity<TrackingResponse> getTrackingDetails(@PathVariable String trackingNumber) {
-        return ResponseEntity.ok(statusHistoryService.getTrackingInfo(trackingNumber));
+    public TrackingResponse getTrackingDetails(@PathVariable String trackingNumber) {
+        return statusHistoryService.getTrackingInfo(trackingNumber);
     }
 
     //todo: bunun mentiqini basa dusmemisem nedi ne deyil

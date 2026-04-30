@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @Builder
 public class TrackingResponse {
-    private Integer trackingNumber;
+    private String trackingNumber;
     private String receiverName;
     private String deliveryAddress;
     private OrderStatus currentStatus;

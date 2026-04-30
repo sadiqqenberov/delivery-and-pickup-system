@@ -2,7 +2,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentDto;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentResponseDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.TrackingResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.shipment.ShipmentService;
@@ -27,9 +27,9 @@ public class ShipmentController {
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @PostMapping("/create")
-    public BaseResponse<ShipmentResponseDto> create(@RequestBody ShipmentDto shipmentDto) {
+    public BaseResponse<TrackingResponse> create(@RequestBody ShipmentDto shipmentDto) {
 
-        ShipmentResponseDto response = shipmentService.createShipment(shipmentDto);
+        TrackingResponse response = shipmentService.createShipment(shipmentDto);
 
         return BaseResponse.success(OrderStatus.CREATED, response);
     }
@@ -47,7 +47,7 @@ public class ShipmentController {
     }
 
     @GetMapping("/tracking/{trackingNumber}")
-    public ResponseEntity<ShipmentResponseDto> findTracking(@PathVariable String trackingNumber) {
+    public ResponseEntity<TrackingResponse> findTracking(@PathVariable String trackingNumber) {
         return shipmentService.findByTrackingNumber(trackingNumber)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

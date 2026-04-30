@@ -89,9 +89,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(int id, UserDto userDto) {
+
         User user = findById(id);
 
         userMapper.updateUserFromDto(userDto, user);
+
+        if (userDto.getRole() != null) {
+            Role role = roleRepository.findByRoleName(userDto.getRole())
+                    .orElseThrow(BaseException::roleNotFound);
+
+            user.setRole(role);
+        }
 
         return userMapper.toDto(userRepository.save(user));
     }
@@ -136,5 +144,11 @@ public class UserServiceImpl implements UserService {
                 );
 
         return userMapper.toDto(user);
+    }
+
+    @Override
+    public Void deleteById(int id) {
+        userRepository.deleteById(id);
+        return null;
     }
 }

@@ -10,6 +10,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.pricing
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.PricingRuleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,8 +26,8 @@ public class PricingRuleServiceImpl implements PricingRuleService {
     public PricingResponseDTO calculatePrice(PricingDto dto) {
 
         PricingRule rule = pricingRuleRepository
-                .findFirstByStandardDelivery(String.valueOf(RuleDelivery.STANDARD))
-                .orElseThrow(BaseException::new);
+                .findFirstByStandardDelivery(RuleDelivery.STANDARD)
+                .orElseThrow(() -> BaseException.notFound());
 
         double totalPrice = rule.getBasePrice();
 

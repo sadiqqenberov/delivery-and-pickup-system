@@ -1,6 +1,5 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.shipment;
 
-import com.fasterxml.jackson.databind.introspect.DefaultAccessorNamingStrategy;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -10,9 +9,9 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentResponseDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.TrackingResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
-import delivery_and_pickup_system.delivery_and_pickup_system.repository.StatusHistoryRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,43 +32,21 @@ public class ShipmentServiceImpl implements ShipmentService {
 
 
     @Override
-    public ShipmentResponseDto createShipment(ShipmentDto dto) {
+    public TrackingResponse createShipment(ShipmentDto dto) {
 
         User user = userRepository.findFirstByNameAndSurname(
-                        dto.getCreatedByName(), dto.getCreatedBySurname())
-                .orElseThrow(BaseException::notFound);
+                dto.getCreatedByName(), dto.getCreatedBySurname()
+        ).orElseThrow(BaseException::notFound);
 
-        Shipment shipment = new Shipment();
+        Shipment shipment = shipmentMapper.toEntity(dto);
 
         shipment.setTrackingNumber(String.valueOf(System.currentTimeMillis()));
-
-        shipment.setSenderName(dto.getSenderName());
-        shipment.setSenderPhone(dto.getSenderPhone());
-        shipment.setReceiverName(dto.getReceiverName());
-        shipment.setReceiverPhone(dto.getReceiverPhone());
-        shipment.setDeliveryAddress(dto.getDeliveryAddress());
-        shipment.setWeight(dto.getWeight());
-        shipment.setPrice(dto.getPrice());
         shipment.setCreatedBy(user);
-
         shipment.setStatus(OrderStatus.CREATED);
 
         Shipment saved = shipmentRepository.save(shipment);
 
-        ShipmentResponseDto response = new ShipmentResponseDto();
-        response.setId(saved.getId());
-        response.setTrackingNumber(saved.getTrackingNumber());
-        response.setSenderName(saved.getSenderName());
-        response.setReceiverName(saved.getReceiverName());
-        response.setWeight(saved.getWeight());
-        response.setPrice(saved.getPrice());
-
-        response.setStatusKey(saved.getStatus().key());
-        response.setStatusMessage(saved.getStatus().message());
-
-        response.setCreatedByName(saved.getCreatedBy().getName());
-
-        return response;
+        return shipmentMapper.toResponseDto(saved);
     }
 
     @Override
@@ -95,7 +72,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public Optional<ShipmentResponseDto> findByTrackingNumber(String trackingNumber) {
+    public Optional<TrackingResponse> findByTrackingNumber(String trackingNumber) {
         return shipmentRepository.findByTrackingNumber(trackingNumber)
                 .map(shipmentMapper::toResponseDto);
     }

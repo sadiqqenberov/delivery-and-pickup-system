@@ -4,6 +4,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseExcep
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.StatusHistoryMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.StatusHistory;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusHistoryDTO;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusUpdateRequest;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.TrackingResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
@@ -43,12 +44,16 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
     }
 
     @Override
-    public List<StatusHistory> getShipmentStatusHistory(Integer shipmentId) {
+    public List<StatusHistoryDTO> getShipmentStatusHistory(Integer shipmentId) {
+
         if (!shipmentRepository.existsById(shipmentId)) {
             throw BaseException.shipmentNotFound(shipmentId);
         }
 
-        return historyRepository.findAllByShipmentIdOrderByChangedAtDesc(shipmentId);
+        List<StatusHistory> list =
+                historyRepository.findAllByShipmentIdOrderByChangedAtDesc(shipmentId);
+
+        return statusHistoryMapper.toResponseList(list);
     }
 
     @Override

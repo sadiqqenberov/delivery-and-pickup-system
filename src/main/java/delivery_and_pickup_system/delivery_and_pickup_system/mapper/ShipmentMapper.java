@@ -3,6 +3,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.mapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentResponseDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.TrackingResponse;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.List;
 public interface ShipmentMapper {
 
 
-    @Mapping(target = "createdByName", source = "createdBy.name")
-    @Mapping(target = "statusKey", source = "status")
-    ShipmentResponseDto toResponseDto(Shipment shipment);
+//    @Mapping(target = "createdByName", source = "createdBy.name")
+//    @Mapping(target = "statusKey", source = "status")
+    TrackingResponse toResponseDto(Shipment shipment);
 
 
     List<ShipmentResponseDto> toDtoList(List<Shipment> shipments);
@@ -32,4 +33,5 @@ public interface ShipmentMapper {
 
     @Mapping(target = "createdBy", ignore = true)
     void updateShipmentFromDto(ShipmentDto dto, @MappingTarget Shipment shipment);
+
 }

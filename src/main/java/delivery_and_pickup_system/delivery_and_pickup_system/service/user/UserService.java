@@ -28,6 +28,8 @@ public interface UserService {
     List<UserDto> getAllCouriers();
 
     UserDto getCurrentUser();
+
+    Void deleteById(int id);
     
 
 }

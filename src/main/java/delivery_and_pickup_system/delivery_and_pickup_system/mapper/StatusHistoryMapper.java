@@ -21,4 +21,6 @@ public interface StatusHistoryMapper {
     @Mapping(target = "history", source = "historyList")
     @Mapping(target = "currentStatus", source = "shipment.status")
     TrackingResponse toTrackingResponse(Shipment shipment, List<StatusHistory> historyList);
+
+    List<StatusHistoryDTO> toResponseList(List<StatusHistory> list);
 }

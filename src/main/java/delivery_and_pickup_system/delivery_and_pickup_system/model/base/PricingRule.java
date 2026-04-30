@@ -35,6 +35,6 @@ public class PricingRule {
     Double extraPricePerKm;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "standard_delivery", nullable = false)
+    @Column(name = "standard_delivery")
     RuleDelivery standardDelivery;
 }

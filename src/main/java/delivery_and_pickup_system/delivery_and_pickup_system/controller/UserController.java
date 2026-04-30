@@ -72,5 +72,9 @@ public class UserController {
         return userService.getCurrentUser();
     }
 
-
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public Void deleteUser(@PathVariable int id) {
+        return userService.deleteById(id);
+    }
 }

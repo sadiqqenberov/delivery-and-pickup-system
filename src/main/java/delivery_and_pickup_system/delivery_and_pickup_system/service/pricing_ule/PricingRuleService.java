@@ -7,7 +7,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.pricingRu
 
 public interface PricingRuleService {
 
-    PricingResponseDTO calculatePrice(PricingDto request) throws Exception;
+    PricingResponseDTO calculatePrice(PricingDto request);
 
     Iterable<PricingRule> findAll();
 

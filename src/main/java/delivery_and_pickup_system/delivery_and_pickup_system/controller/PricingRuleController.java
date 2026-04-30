@@ -2,6 +2,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.PricingRule;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.pricingRule.PricingDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.pricingRule.PricingResponseDTO;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.pricingRule.PricingRuleDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
@@ -22,10 +23,10 @@ public class PricingRuleController {
 
 
     @PostMapping("/calculate")
-    public BaseResponse<PricingDto> calculate(@RequestBody PricingDto dto) throws Exception {
+    public BaseResponse<PricingResponseDTO> calculate(@RequestBody PricingDto dto) {
+        PricingResponseDTO result = pricingRuleService.calculatePrice(dto);
 
-
-        return BaseResponse.success(OrderStatus.PRICE_CALCULATED,dto);
+        return BaseResponse.success(OrderStatus.PRICE_CALCULATED, result);
     }
 
     @GetMapping("/all")
