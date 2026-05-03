@@ -4,15 +4,12 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProofOfDeliveryResponseDTO {
-    Integer id;
-    String receivedBy;
-    String signatureUrl;
-    String photoUrl;
-    LocalDateTime confirmedAt;
-    Integer shipmentId;
+public class ProofOfDeliveryRequestDto {
+
+    private Integer shipmentId;
+    private String receivedBy;
+    private String signatureUrl;
+    private String photoUrl;
 }

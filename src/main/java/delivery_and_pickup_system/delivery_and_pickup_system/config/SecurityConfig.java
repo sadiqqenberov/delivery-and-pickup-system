@@ -65,9 +65,9 @@ class SecurityConfig {
                     //StatusHistory URLs
                     request.requestMatchers("/status_history/shipments/").permitAll();
 
-                    // Test endpoints
-                    request.requestMatchers("/test").authenticated();
-                    request.requestMatchers("/test/no-auth").permitAll();
+                    //Notification
+                    request.requestMatchers("/notification/sms").permitAll();
+                    request.requestMatchers("/notification/email").permitAll();
 
                     // Temporary
                     request.requestMatchers("/**").authenticated();

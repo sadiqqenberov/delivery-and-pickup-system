@@ -1,10 +1,10 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.proof_of_delivery;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryRequestDTO;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryResponseDTO;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryRequestDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryResponseDto;
 
 public interface ProofOfDeliveryService {
-    ProofOfDeliveryResponseDTO createProof(ProofOfDeliveryRequestDTO dto);
+    ProofOfDeliveryResponseDto create(ProofOfDeliveryRequestDto request);
 
-    ProofOfDeliveryResponseDTO getProofByShipmentId(Integer shipmentId);
+    ProofOfDeliveryResponseDto getByShipmentId(Integer shipmentId);
 }

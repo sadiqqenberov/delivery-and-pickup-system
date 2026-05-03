@@ -76,6 +76,10 @@ public class BaseException extends RuntimeException{
         return of(TRACKING_NUMBER_NOT_FOUND);
     }
 
+    public static BaseException proofOfDeliveryNotFound(){
+        return of(PROOF_OF_DELIVERY_NOT_FOUND);
+    }
+
     public static BaseException userExists(){
         return of(USER_EXISTS);
     }

@@ -1,7 +1,7 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryRequestDTO;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryResponseDTO;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryRequestDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryResponseDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.proof_of_delivery.ProofOfDeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +17,13 @@ public class ProofOfDeliveryController {
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @PostMapping
-    public ResponseEntity<ProofOfDeliveryResponseDTO> create(@RequestBody ProofOfDeliveryRequestDTO dto) {
-        return ResponseEntity.ok(service.createProof(dto));
+    public ResponseEntity<ProofOfDeliveryResponseDto> create(@RequestBody ProofOfDeliveryRequestDto request) {
+        return ResponseEntity.ok(service.create(request));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR','COURIER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping("/{shipmentId}")
-    public ResponseEntity<ProofOfDeliveryResponseDTO> getByShipmentId(@PathVariable Integer shipmentId) {
-        return ResponseEntity.ok(service.getProofByShipmentId(shipmentId));
+    public ResponseEntity<ProofOfDeliveryResponseDto> getByShipmentId(@PathVariable Integer shipmentId) {
+        return ResponseEntity.ok(service.getByShipmentId(shipmentId));
     }
 }

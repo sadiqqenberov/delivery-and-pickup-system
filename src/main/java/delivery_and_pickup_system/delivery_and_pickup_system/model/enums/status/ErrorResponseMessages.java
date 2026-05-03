@@ -24,6 +24,7 @@ public enum ErrorResponseMessages implements ResponseMessage {
     ROLE_NOT_FOUND("role_not_found", "Role not found", HttpStatus.NOT_FOUND),
     TRACKING_NUMBER_NOT_FOUND("tracking_number_not_found", "Tracking number not found", HttpStatus.NOT_FOUND),
     USER_EXISTS("user_exists", "User exists", HttpStatus.CONFLICT),
+    PROOF_OF_DELIVERY_NOT_FOUND("proof_of_delivery_not_found", "Proof of delivery not found", HttpStatus.NOT_FOUND),
     ;
 
     String key;

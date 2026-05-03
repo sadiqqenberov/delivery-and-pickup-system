@@ -3,9 +3,11 @@ package delivery_and_pickup_system.delivery_and_pickup_system.service.proof_of_d
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.ProofOfDeliveryMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.ProofOfDelivery;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryRequestDTO;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryResponseDTO;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryRequestDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryResponseDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ProofOfDeliveryRepository;
+import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,23 +20,48 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProofOfDeliveryServiceImpl implements ProofOfDeliveryService {
 
-    ProofOfDeliveryRepository repository;
-    ProofOfDeliveryMapper mapper;
+    private final ProofOfDeliveryRepository repository;
+    private final ShipmentRepository shipmentRepository;
+    private final ProofOfDeliveryMapper mapper;
 
-    @Override
-    public ProofOfDeliveryResponseDTO createProof(ProofOfDeliveryRequestDTO dto) {
-        ProofOfDelivery proof = mapper.toEntity(dto);
-        proof.setConfirmedAt(LocalDateTime.now());
-
-        ProofOfDelivery savedProof = repository.save(proof);
-        return mapper.toResponseDto(savedProof);
+    private String generateOtp() {
+        int otp = (int) (Math.random() * 900000) + 100000;
+        return String.valueOf(otp);
     }
 
     @Override
-    public ProofOfDeliveryResponseDTO getProofByShipmentId(Integer shipmentId) {
-        ProofOfDelivery proof = repository.findByShipmentId(shipmentId)
+    public ProofOfDeliveryResponseDto create(ProofOfDeliveryRequestDto request) {
+
+        Shipment shipment = shipmentRepository.findById(request.getShipmentId())
                 .orElseThrow(BaseException::shipmentNotFound);
 
-        return mapper.toResponseDto(proof);
+        //todo: exception
+        if (repository.existsByShipmentId(request.getShipmentId())) {
+            throw new RuntimeException("Çatdırılma təsdiqi artıq mövcuddur");
+        }
+
+        String otp = generateOtp();
+
+        ProofOfDelivery pod = ProofOfDelivery.builder()
+                .shipment(shipment)
+                .receivedBy(request.getReceivedBy())
+                .signatureUrl(request.getSignatureUrl())
+                .photoUrl(request.getPhotoUrl())
+                .otpCode(otp)
+                .confirmedAt(LocalDateTime.now())
+                .build();
+
+        repository.save(pod);
+
+        return mapper.toDto(pod);
+    }
+
+    @Override
+    public ProofOfDeliveryResponseDto getByShipmentId(Integer shipmentId) {
+
+        ProofOfDelivery pod = repository.findByShipmentId(shipmentId)
+                .orElseThrow(BaseException::proofOfDeliveryNotFound);
+
+        return mapper.toDto(pod);
     }
 }
