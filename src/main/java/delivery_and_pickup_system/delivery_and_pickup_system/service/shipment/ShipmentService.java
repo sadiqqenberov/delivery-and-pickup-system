@@ -19,7 +19,7 @@ public interface ShipmentService {
 
     ShipmentDto update(int id, ShipmentDto shipmentDto);
 
-    Shipment cancelShipment(int id);
+    void cancelShipment(Integer id);
 
     Void deleteShipment(int id);
 

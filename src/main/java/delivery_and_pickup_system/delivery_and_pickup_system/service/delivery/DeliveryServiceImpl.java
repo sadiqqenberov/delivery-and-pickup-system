@@ -7,12 +7,14 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.FailedDe
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.delivery.*;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.DeliveryRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.FailedDeliveryRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,6 +46,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setSuccess(false);
 
         Delivery saved = deliveryRepository.save(delivery);
+
+        shipment.setStatus(OrderStatus.IN_TRANSIT);
 
         return deliveryMapper.toDto(saved);
     }
@@ -79,6 +83,8 @@ public class DeliveryServiceImpl implements DeliveryService {
                 .build();
 
         FailedDelivery saved = failedDeliveryRepository.save(failed);
+
+        shipment.setStatus(OrderStatus.DELIVERY_ATTEMPT_FAILED);
 
         return deliveryMapper.toDto(saved);
     }

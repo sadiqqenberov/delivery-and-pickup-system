@@ -16,6 +16,8 @@ public enum ErrorResponseMessages implements ResponseMessage {
     USER_NOT_ACTIVE("user_not_active", "User is not active", HttpStatus.FORBIDDEN),
     OTP_IS_NOT_VALID("otp_is_not_valid", "OTP is not valid", HttpStatus.CONFLICT),
     SHIPMENT_NOT_FOUND("shipment_not_found", "Shipment not found", HttpStatus.CONFLICT),
+    SHIPMENT_ALREADY_CANCELLED("shipment_already_cancelled", "Shipment already cancelled", HttpStatus.CONFLICT),
+    DELIVERED_SHIPMENT_CANNOT_CANCELLED("delivred_shipment_cannot_cancelled", "Delivered shipment cannot be cancelled", HttpStatus.CONFLICT),
     COURIER_NOT_FOUND("courier_not_found", "Courier not found", HttpStatus.CONFLICT),
     DELIVERY_NOT_FOUND("delivery_not_found", "Delivery not found", HttpStatus.CONFLICT),
     DELIVERY_CONFIRMED("delivery_confirmed", "Delivery confirmed", HttpStatus.CONFLICT),
@@ -25,6 +27,7 @@ public enum ErrorResponseMessages implements ResponseMessage {
     TRACKING_NUMBER_NOT_FOUND("tracking_number_not_found", "Tracking number not found", HttpStatus.NOT_FOUND),
     USER_EXISTS("user_exists", "User exists", HttpStatus.CONFLICT),
     PROOF_OF_DELIVERY_NOT_FOUND("proof_of_delivery_not_found", "Proof of delivery not found", HttpStatus.NOT_FOUND),
+    PROOF_OF_DELIVERY_ALREADY_EXISTS("proof_of_delivery_already_exists", "Proof of delivery already exists", HttpStatus.CONFLICT),
     ;
 
     String key;

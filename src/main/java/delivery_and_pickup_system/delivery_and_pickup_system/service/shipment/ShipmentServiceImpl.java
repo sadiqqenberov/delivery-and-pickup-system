@@ -88,15 +88,30 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     }
 
-    //todo:bunu yaz
     @Override
-    public Shipment cancelShipment(int id) {
-        return null;
+    public void cancelShipment(Integer id) {
+
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(BaseException::shipmentNotFound);
+
+        if (shipment.getStatus() == OrderStatus.CANCELLED) {
+            throw BaseException.shipmentAlreadyCancelled();
+        }
+
+        if (shipment.getStatus() == OrderStatus.DELIVERED) {
+            throw BaseException.deliveredShipmentCannotCancelled();
+        }
+
+        shipment.setStatus(OrderStatus.CANCELLED);
+
+        shipmentRepository.save(shipment);
     }
 
     @Override
     public Void deleteShipment(int id) {
-        shipmentRepository.deleteById(id);
+        Shipment shipment = shipmentRepository.deleteById(id);
+
+        shipment.setStatus(OrderStatus.DELETED);
         return null;
     }
 

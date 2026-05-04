@@ -35,9 +35,8 @@ public class ProofOfDeliveryServiceImpl implements ProofOfDeliveryService {
         Shipment shipment = shipmentRepository.findById(request.getShipmentId())
                 .orElseThrow(BaseException::shipmentNotFound);
 
-        //todo: exception
         if (repository.existsByShipmentId(request.getShipmentId())) {
-            throw new RuntimeException("Çatdırılma təsdiqi artıq mövcuddur");
+            throw BaseException.proofOfDeliveryAlreadyExists();
         }
 
         String otp = generateOtp();

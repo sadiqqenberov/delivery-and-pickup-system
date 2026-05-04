@@ -48,6 +48,14 @@ public class BaseException extends RuntimeException{
         return of(SHIPMENT_NOT_FOUND);
     }
 
+    public static BaseException shipmentAlreadyCancelled(){
+        return of(SHIPMENT_ALREADY_CANCELLED);
+    }
+
+    public static BaseException deliveredShipmentCannotCancelled(){
+        return of(DELIVERED_SHIPMENT_CANNOT_CANCELLED);
+    }
+
     public static BaseException courierNotFound(){
         return of(COURIER_NOT_FOUND);
     }
@@ -78,6 +86,10 @@ public class BaseException extends RuntimeException{
 
     public static BaseException proofOfDeliveryNotFound(){
         return of(PROOF_OF_DELIVERY_NOT_FOUND);
+    }
+
+    public static BaseException proofOfDeliveryAlreadyExists(){
+        return of(PROOF_OF_DELIVERY_ALREADY_EXISTS);
     }
 
     public static BaseException userExists(){

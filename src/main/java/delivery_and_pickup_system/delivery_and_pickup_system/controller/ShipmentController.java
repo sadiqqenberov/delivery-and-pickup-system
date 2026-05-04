@@ -59,10 +59,13 @@ public class ShipmentController {
         return shipmentService.update(id,shipmentDto);
     }
 
-    //todo: bunu yazmamisan
-    @PatchMapping("/cancel/{id}")
-    public BaseResponse<ShipmentDto> cancel(@PathVariable Integer id) {
-        return null;
+    @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
+    @PatchMapping("/{id}/cancel")
+    public BaseResponse<OrderStatus> cancelShipment(@PathVariable Integer id) {
+
+        shipmentService.cancelShipment(id);
+
+        return BaseResponse.success(OrderStatus.CANCELLED);
     }
 
 
