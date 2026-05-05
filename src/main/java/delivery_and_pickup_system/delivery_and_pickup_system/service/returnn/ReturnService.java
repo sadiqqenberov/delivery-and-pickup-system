@@ -7,11 +7,11 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.
 import java.util.List;
 
 public interface ReturnService {
-    Return initiateReturn(ReturnRequestDTO requestDTO);
+    void initiateReturn(ReturnRequestDTO requestDTO);
 
-    Return approveReturn(Integer id);
+    void approveReturn(Integer id);
 
-    Return completeReturn(Integer id);
+    void completeReturn(Integer id);
 
     Return getReturnById(Integer id);
 

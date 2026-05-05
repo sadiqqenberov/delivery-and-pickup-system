@@ -3,7 +3,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.service.security;
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.LoginPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenPayload;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.signup.SignUpPayload;

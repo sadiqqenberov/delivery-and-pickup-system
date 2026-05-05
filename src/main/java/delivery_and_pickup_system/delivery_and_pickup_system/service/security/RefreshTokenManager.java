@@ -1,7 +1,7 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.security;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.RefreshTokenDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth.RefreshTokenDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.properties.security.SecurityProperties;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.base.TokenGenerator;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.base.TokenReader;

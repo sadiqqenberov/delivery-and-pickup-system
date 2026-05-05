@@ -24,7 +24,7 @@ public class ReturnServiceImpl implements ReturnService {
     ShipmentRepository shipmentRepository;
 
     @Override
-    public Return initiateReturn(ReturnRequestDTO requestDTO) {
+    public void initiateReturn(ReturnRequestDTO requestDTO) {
         Shipment shipment = shipmentRepository.findById(requestDTO.getShipmentId())
                 .orElseThrow(BaseException::shipmentNotFound);
 
@@ -35,13 +35,17 @@ public class ReturnServiceImpl implements ReturnService {
                 .returnedAt(LocalDateTime.now())
                 .build();
 
-        return returnRepository.save(newReturn);
+        shipment.setStatus(OrderStatus.RETURN_REQUESTED);
+
+        returnRepository.save(newReturn);
     }
 
     @Override
-    public Return approveReturn(Integer id) {
+    public void approveReturn(Integer id) {
         Return returnOrder = returnRepository.findById(id)
                 .orElseThrow(() -> BaseException.returnRequestNotFound(id));
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(BaseException::shipmentNotFound);
 
         returnOrder.setStatus(OrderStatus.RETURNED);
 
@@ -49,13 +53,17 @@ public class ReturnServiceImpl implements ReturnService {
             returnOrder.getShipment().setStatus(OrderStatus.RETURN_IN_PROGRESS);
         }
 
-        return returnRepository.save(returnOrder);
+        shipment.setStatus(OrderStatus.RETURN_IN_PROGRESS);
+
+        returnRepository.save(returnOrder);
     }
 
     @Override
-    public Return completeReturn(Integer id) {
+    public void completeReturn(Integer id) {
         Return returnOrder = returnRepository.findById(id)
                 .orElseThrow(() -> BaseException.returnRequestNotFound(id));
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(BaseException::shipmentNotFound);
 
         if (returnOrder.getStatus() == OrderStatus.CANCELLED) {
             throw BaseException.cancelledReturnCannotCompleted();
@@ -68,8 +76,9 @@ public class ReturnServiceImpl implements ReturnService {
         }
 
         returnOrder.setReturnedAt(LocalDateTime.now());
+        shipment.setStatus(OrderStatus.RETURNED);
 
-        return returnRepository.save(returnOrder);
+        returnRepository.save(returnOrder);
     }
 
     @Override

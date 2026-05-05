@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.customer;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.ShipmentMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment.ShipmentResponseDto;
@@ -34,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
     public TrackingResponse getTracking(String trackingNumber) {
 
         Shipment shipment = customerRepository.findByTrackingNumber(trackingNumber)
-                .orElseThrow(() -> new RuntimeException("Shipment tapılmadı: " + trackingNumber));
+                .orElseThrow(() -> BaseException.shipmentNotFound(Integer.valueOf(trackingNumber)));
 
         return shipmentMapper.toResponseDto(shipment);
     }

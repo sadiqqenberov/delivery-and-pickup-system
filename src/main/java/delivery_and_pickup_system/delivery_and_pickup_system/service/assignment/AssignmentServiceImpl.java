@@ -38,7 +38,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .orElseThrow(BaseException::shipmentNotFound);
 
         User courier = userRepository.findById(assignmentDto.getCourierId())
-                .orElseThrow(BaseException::shipmentNotFound);
+                .orElseThrow(BaseException::courierNotFound);
 
         Assignment assignment = Assignment.builder()
                 .shipment(shipment)

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- 1. Column əlavə et -->
+    <changeSet id="add-changed-by-user-id-column" author="sadiq">
+
+        <addColumn tableName="status_history">
+            <column name="changed_by_user_id" type="BIGINT"/>
+        </addColumn>
+
+    </changeSet>
+
+    <!-- 2. Foreign Key əlavə et -->
+    <changeSet id="add-fk-status-history-user" author="sadiq">
+
+        <addForeignKeyConstraint
+                baseTableName="status_history"
+                baseColumnNames="changed_by_user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_status_history_user"/>
+
+    </changeSet>
+
+</databaseChangeLog>

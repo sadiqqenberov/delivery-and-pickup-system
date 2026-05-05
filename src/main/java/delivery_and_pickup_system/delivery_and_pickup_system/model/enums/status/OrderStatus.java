@@ -25,7 +25,7 @@ public enum OrderStatus implements ResponseMessage {
     DAMAGED("Zədələndi","Sifariş zədələnmişdir", HttpStatus.BAD_REQUEST),
     DELETED("Silindi","Sifariş silindi", HttpStatus.OK),
     UPDATE_STATUS("Status dəyişdi","Sifarişin statusu dəyişdi", HttpStatus.OK),
-    COMPLETED("","",HttpStatus.BAD_REQUEST)
+    COMPLETED("","",HttpStatus.BAD_REQUEST),
     ;
 
     private final String key;

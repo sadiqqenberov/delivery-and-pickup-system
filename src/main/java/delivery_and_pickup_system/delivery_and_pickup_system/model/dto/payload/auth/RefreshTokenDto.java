@@ -1,4 +1,4 @@
-package delivery_and_pickup_system.delivery_and_pickup_system.model.dto;
+package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.payload.auth;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import lombok.AccessLevel;

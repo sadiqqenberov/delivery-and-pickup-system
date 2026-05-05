@@ -34,4 +34,8 @@ public class StatusHistory {
 
     @Column(length = 1000)
     String note;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "changed_by_user_id")
+    User changedBy;
 }

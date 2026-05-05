@@ -1,7 +1,7 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusHistoryDTO;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusUpdateRequest;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusResponseDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.TrackingResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
@@ -24,7 +24,7 @@ public class StatusHistoryController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR','COURIER')")
     @PatchMapping("/{id}/status")
-    public BaseResponse<?> updateStatus(@PathVariable Integer id, @RequestBody StatusUpdateRequest request) {
+    public BaseResponse<?> updateStatus(@PathVariable Integer id, @RequestBody StatusHistoryDTO request) {
         statusHistoryService.updateShipmentStatus(id, request);
         return BaseResponse.success(OrderStatus.UPDATE_STATUS);
     }
@@ -36,7 +36,7 @@ public class StatusHistoryController {
 
     @PreAuthorize("hasAnyAuthority('CUSTOMER','OPERATOR')")
     @GetMapping("/{trackingNumber}")
-    public TrackingResponse getTrackingDetails(@PathVariable String trackingNumber) {
+    public StatusResponseDto getTrackingDetails(@PathVariable String trackingNumber) {
         return statusHistoryService.getTrackingInfo(trackingNumber);
     }
 
