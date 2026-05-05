@@ -51,7 +51,9 @@ class SecurityConfig {
 
                     // Auth URLs
                     request.requestMatchers("/auth/logout").authenticated();
+                    request.requestMatchers("/auth/token/refresh").authenticated();
                     request.requestMatchers("/auth/**").anonymous();
+                    request.requestMatchers("auth/sign-up").permitAll();
 
                     //Shipment URLs
                     request.requestMatchers("/shipment/tracking/{trackingNumber}").permitAll();

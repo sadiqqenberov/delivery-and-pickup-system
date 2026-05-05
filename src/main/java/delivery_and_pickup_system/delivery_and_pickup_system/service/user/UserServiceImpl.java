@@ -10,6 +10,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserRoleDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserStatusDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.user.UserStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.security.LoggedInUserDetails;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.RoleRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
         User user = findById(id);
 
         userMapper.updateUserFromDto(userDto, user);
-
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         if (userDto.getRole() != null) {
             Role role = roleRepository.findByRoleName(userDto.getRole())
                     .orElseThrow(BaseException::roleNotFound);
@@ -102,15 +103,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return userMapper.toDto(userRepository.save(user));
-    }
-
-    @Override
-    public UserStatusDto updateStatus(int id, UserStatusDto userStatusDto) {
-        User user = findById(id);
-
-        userMapper.updateUserStatusFromDto(userStatusDto, user);
-
-        return userMapper.toDtoUser(userRepository.save(user));
     }
 
     @Override
@@ -150,5 +142,39 @@ public class UserServiceImpl implements UserService {
     public Void deleteById(int id) {
         userRepository.deleteById(id);
         return null;
+    }
+
+    @Override
+    public List<UserDto> getAllActiveUsers() {
+        return userRepository.findAllByStatus(UserStatus.ACTIVE)
+                .stream()
+                .map(userMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public UserDto getActiveUserById(Integer id) {
+        User user = userRepository.findByIdAndStatus(id, UserStatus.ACTIVE)
+                .orElseThrow(BaseException::userNotFound);
+
+        return userMapper.toDto(user);
+    }
+
+    @Override
+    public void deactivateUser(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(BaseException::userNotFound);
+
+        user.setStatus(UserStatus.INACTIVE);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void activateUser(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(BaseException::userNotFound);
+
+        user.setStatus(UserStatus.ACTIVE);
+        userRepository.save(user);
     }
 }

@@ -21,8 +21,6 @@ public interface UserService {
 
     UserDto update(int id, UserDto userDto);
 
-    UserStatusDto updateStatus(int id, UserStatusDto userStatusDto);
-
     UserRoleDto updateUserRole(int id, UserRoleDto userRoleDto);
 
     List<UserDto> getAllCouriers();
@@ -30,6 +28,14 @@ public interface UserService {
     UserDto getCurrentUser();
 
     Void deleteById(int id);
+
+    List<UserDto> getAllActiveUsers();
+
+    UserDto getActiveUserById(Integer id);
+
+    void deactivateUser(Integer id);
+
+    void activateUser(Integer id);
     
 
 }

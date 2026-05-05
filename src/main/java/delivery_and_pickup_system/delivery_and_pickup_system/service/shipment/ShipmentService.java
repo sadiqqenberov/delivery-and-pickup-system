@@ -13,7 +13,7 @@ public interface ShipmentService {
 
     MappingJacksonValue findAll();
 
-    Shipment findById(int id);
+    ShipmentDto findById(int id);
 
     Optional<TrackingResponse> findByTrackingNumber(String trackingNumber);
 
@@ -21,6 +21,6 @@ public interface ShipmentService {
 
     void cancelShipment(Integer id);
 
-    Void deleteShipment(int id);
+    void deleteShipment(int id);
 
 }

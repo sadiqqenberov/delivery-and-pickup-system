@@ -15,7 +15,7 @@ public interface AssignmentService {
 
     List<AssignmentDto> getAssignmentsByCourierId(Integer courierId);
 
-    List<Assignment> getMyAssignments();
+    List<AssignmentDto> getMyAssignments();
 }
 
 

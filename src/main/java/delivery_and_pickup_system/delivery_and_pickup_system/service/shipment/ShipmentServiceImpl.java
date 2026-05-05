@@ -67,8 +67,10 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public Shipment findById(int id) {
-        return shipmentRepository.findById(id);
+    public ShipmentDto findById(int id) {
+        Shipment shipment = shipmentRepository.findById(id);
+
+        return shipmentMapper.toDto(shipment);
     }
 
     @Override
@@ -108,11 +110,8 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public Void deleteShipment(int id) {
-        Shipment shipment = shipmentRepository.deleteById(id);
-
-        shipment.setStatus(OrderStatus.DELETED);
-        return null;
+    public void deleteShipment(int id) {
+        shipmentRepository.deleteById(id);
     }
 
 }

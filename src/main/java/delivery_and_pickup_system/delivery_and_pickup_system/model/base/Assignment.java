@@ -20,7 +20,7 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "shipment_id", nullable = false)
     Shipment shipment;
 

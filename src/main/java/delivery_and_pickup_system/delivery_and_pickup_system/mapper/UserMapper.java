@@ -32,7 +32,5 @@ public interface UserMapper {
     @Mapping(target = "role", ignore = true)
     void updateUserFromDto(UserDto dto, @MappingTarget User user);
 
-    void updateUserStatusFromDto(UserStatusDto dto, @MappingTarget User user);
-
     void updateUserRoleFromDto(UserRoleDto dto, @MappingTarget User user);
 }

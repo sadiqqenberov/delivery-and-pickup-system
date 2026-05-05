@@ -42,7 +42,7 @@ public class ShipmentController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @GetMapping("/{id}")
-    public Shipment findById(@PathVariable int id) {
+    public ShipmentDto findById(@PathVariable int id) {
         return shipmentService.findById(id);
     }
 
@@ -70,11 +70,9 @@ public class ShipmentController {
 
 
     @DeleteMapping("/delete/{id}")
-    public BaseResponse<?> deleted(@PathVariable Integer id) {
+    public void deleted(@PathVariable Integer id) {
 
         shipmentService.deleteShipment(id);
-
-        return BaseResponse.success(OrderStatus.DELETED);
     }
 
 }

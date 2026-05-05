@@ -29,6 +29,7 @@ public class StatusHistoryController {
         return BaseResponse.success(OrderStatus.UPDATE_STATUS);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR','COURIER')")
     @GetMapping("/shipments/{id}/status-history")
     public List<StatusHistoryDTO> getStatusHistory(@PathVariable Integer id) {
         return statusHistoryService.getShipmentStatusHistory(id);
@@ -40,6 +41,4 @@ public class StatusHistoryController {
         return statusHistoryService.getTrackingInfo(trackingNumber);
     }
 
-    //todo: bunun mentiqini basa dusmemisem nedi ne deyil
-    //@PostMapping("/tracking/events")
 }

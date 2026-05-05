@@ -1,6 +1,5 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Assignment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.assignment.AssignmentDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.assignment.AssignmentService;
 import lombok.AccessLevel;
@@ -47,7 +46,7 @@ public class AssignmentController {
 
     @PreAuthorize("hasAuthority('COURIER')")
     @GetMapping("/my")
-    public List<Assignment> getMyAssignments() {
+    public List<AssignmentDto> getMyAssignments() {
         return assignmentService.getMyAssignments();
     }
 }

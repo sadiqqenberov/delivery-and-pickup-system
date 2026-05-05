@@ -43,11 +43,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setShipment(shipment);
         delivery.setCourier(courier);
         delivery.setStartedAt(LocalDateTime.now());
-        delivery.setSuccess(false);
-
-        Delivery saved = deliveryRepository.save(delivery);
-
         shipment.setStatus(OrderStatus.IN_TRANSIT);
+        Delivery saved = deliveryRepository.save(delivery);
 
         return deliveryMapper.toDto(saved);
     }
@@ -81,10 +78,9 @@ public class DeliveryServiceImpl implements DeliveryService {
                 .shipment(shipment)
                 .note(dto.getNote())
                 .build();
+        shipment.setStatus(OrderStatus.DELIVERY_ATTEMPT_FAILED);
 
         FailedDelivery saved = failedDeliveryRepository.save(failed);
-
-        shipment.setStatus(OrderStatus.DELIVERY_ATTEMPT_FAILED);
 
         return deliveryMapper.toDto(saved);
     }

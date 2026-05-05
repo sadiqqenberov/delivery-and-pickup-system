@@ -1,9 +1,11 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.service.returnn;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
+import delivery_and_pickup_system.delivery_and_pickup_system.mapper.ReturnMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Return;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnRequestDTO;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnResponseDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnRequestDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ReturnRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
@@ -13,7 +15,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,63 +23,59 @@ public class ReturnServiceImpl implements ReturnService {
 
     ReturnRepository returnRepository;
     ShipmentRepository shipmentRepository;
+    ReturnMapper returnMapper;
 
     @Override
-    public void initiateReturn(ReturnRequestDTO requestDTO) {
-        Shipment shipment = shipmentRepository.findById(requestDTO.getShipmentId())
+    public ReturnResponseDto initiate(ReturnRequestDto dto) {
+
+        Shipment shipment = shipmentRepository.findById(dto.getShipmentId())
                 .orElseThrow(BaseException::shipmentNotFound);
 
-        Return newReturn = Return.builder()
+        Return ret = Return.builder()
                 .shipment(shipment)
-                .reason(requestDTO.getReason())
+                .reason(dto.getReason())
                 .status(OrderStatus.RETURN_REQUESTED)
-                .returnedAt(LocalDateTime.now())
                 .build();
+        shipment.setStatus(OrderStatus.RETURN_REQUESTED)    ;
 
-        shipment.setStatus(OrderStatus.RETURN_REQUESTED);
-
-        returnRepository.save(newReturn);
+        return returnMapper.toDto(returnRepository.save(ret));
     }
 
     @Override
-    public void approveReturn(Integer id) {
-        Return returnOrder = returnRepository.findById(id)
-                .orElseThrow(() -> BaseException.returnRequestNotFound(id));
+    public ReturnResponseDto approve(Integer id) {
         Shipment shipment = shipmentRepository.findById(id)
                 .orElseThrow(BaseException::shipmentNotFound);
 
-        returnOrder.setStatus(OrderStatus.RETURNED);
-
-        if (returnOrder.getShipment() != null) {
-            returnOrder.getShipment().setStatus(OrderStatus.RETURN_IN_PROGRESS);
-        }
-
-        shipment.setStatus(OrderStatus.RETURN_IN_PROGRESS);
-
-        returnRepository.save(returnOrder);
-    }
-
-    @Override
-    public void completeReturn(Integer id) {
-        Return returnOrder = returnRepository.findById(id)
+        Return ret = returnRepository.findById(id)
                 .orElseThrow(() -> BaseException.returnRequestNotFound(id));
-        Shipment shipment = shipmentRepository.findById(id)
-                .orElseThrow(BaseException::shipmentNotFound);
 
-        if (returnOrder.getStatus() == OrderStatus.CANCELLED) {
+        if (ret.getStatus() != OrderStatus.RETURN_REQUESTED) {
             throw BaseException.cancelledReturnCannotCompleted();
         }
 
-        returnOrder.setStatus(OrderStatus.COMPLETED);
+        ret.setStatus(OrderStatus.RETURN_IN_PROGRESS);
+        shipment.setStatus(OrderStatus.RETURN_REQUESTED)    ;
 
-        if (returnOrder.getShipment() != null) {
-            returnOrder.getShipment().setStatus(OrderStatus.COMPLETED);
+        return returnMapper.toDto(returnRepository.save(ret));
+    }
+
+    @Override
+    public ReturnResponseDto complete(Integer id) {
+
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(BaseException::shipmentNotFound);
+        Return ret = returnRepository.findById(id)
+                .orElseThrow(() -> BaseException.returnRequestNotFound(id));
+
+        if (ret.getStatus() != OrderStatus.RETURN_IN_PROGRESS) {
+            throw BaseException.cancelledReturnCannotCompleted();
         }
 
-        returnOrder.setReturnedAt(LocalDateTime.now());
-        shipment.setStatus(OrderStatus.RETURNED);
+        ret.setStatus(OrderStatus.RETURNED);
+        ret.setReturnedAt(LocalDateTime.now());
+        shipment.setStatus(OrderStatus.RETURN_REQUESTED)    ;
 
-        returnRepository.save(returnOrder);
+        return returnMapper.toDto(returnRepository.save(ret));
     }
 
     @Override
@@ -87,11 +84,4 @@ public class ReturnServiceImpl implements ReturnService {
                 .orElseThrow(() -> BaseException.returnRequestNotFound(id));
     }
 
-    @Override
-    public List<Return> getAllReturns(OrderStatus status) {
-        if (status != null) {
-            return returnRepository.findAllByStatus(status);
-        }
-        return returnRepository.findAll();
-    }
 }

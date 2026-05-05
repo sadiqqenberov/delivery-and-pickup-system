@@ -61,7 +61,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public AssignmentDto update(int id, AssignmentDto assignmentDto) {
-        Assignment assignment = assignmentRepository.findByCourierId(id);
+        Assignment assignment = (Assignment) assignmentRepository.findByCourierId(id);
 
         assignmentMapper.updateFromDto(assignmentDto, assignment);
 
@@ -73,12 +73,12 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     public List<AssignmentDto> getAssignmentsByCourierId(Integer courierId) {
         return assignmentMapper.toDtoList(
-                assignmentRepository.findAllByCourierId(courierId)
+                assignmentRepository.findByCourierId(courierId)
         );
     }
 
     @Override
-    public List<Assignment> getMyAssignments() {
+    public List<AssignmentDto> getMyAssignments() {
 
         String email = SecurityContextHolder.getContext()
                 .getAuthentication()

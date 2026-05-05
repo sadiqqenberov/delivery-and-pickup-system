@@ -29,7 +29,6 @@ public class ProofOfDelivery {
     @Column(length = 500)
     String photoUrl;
 
-    // Security note: ideally hashed or temporary token
     @Column(length = 10)
     String otpCode;
 

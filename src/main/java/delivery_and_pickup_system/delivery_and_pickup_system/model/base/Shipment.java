@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "shipments")
@@ -52,4 +53,13 @@ public class Shipment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = false)
     User createdBy;
+
+    @OneToMany(orphanRemoval = true, mappedBy = "shipment")
+    List<Assignment> assignments;
+
+    @OneToMany(orphanRemoval = true, mappedBy = "shipment")
+    List<StatusHistory> statusHistories;
+
+    @OneToOne(orphanRemoval = true,mappedBy = "shipment")
+    Return aRreturn;
 }

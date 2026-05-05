@@ -7,7 +7,8 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.response.Resp
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
-import static delivery_and_pickup_system.delivery_and_pickup_system.model.response.SuccessResponseMessages.SUCCESS;
+import static delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.SuccessResponseMessages.SUCCESS;
+
 
 @Data
 @AllArgsConstructor
@@ -35,10 +36,11 @@ public class BaseResponse<T> {
 
     public static BaseResponse<?> error(BaseException ex) {
         return BaseResponse.builder()
-                .meta(Meta.of(ex))
                 .status(ex.getResponseMessage().status())
+                .meta(Meta.of(ex.getResponseMessage()))
                 .build();
     }
+
     public static <T> BaseResponse<T> success(ResponseMessage responseMessage, T data) {
 
         if (responseMessage == null) {
@@ -55,5 +57,7 @@ public class BaseResponse<T> {
     public static BaseResponse<?> successes(ResponseMessage responseMessage) {
         return success(responseMessage, null);
     }
+
+
 
 }

@@ -27,7 +27,7 @@ public class Return {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    OrderStatus status;
+    OrderStatus status = OrderStatus.RETURN_IN_PROGRESS;
 
     @Column(length = 1000)
     String reason;

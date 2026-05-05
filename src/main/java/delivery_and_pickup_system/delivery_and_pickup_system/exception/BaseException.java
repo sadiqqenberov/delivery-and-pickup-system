@@ -1,14 +1,12 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.exception;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import delivery_and_pickup_system.delivery_and_pickup_system.exception.type.NotFoundExceptionType;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.ErrorResponseMessages;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.ResponseMessage;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.ResponseMessage;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.AuthenticationException;
 
-import java.security.PublicKey;
 import java.util.Map;
 
 import static delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.ErrorResponseMessages.*;
@@ -42,6 +40,10 @@ public class BaseException extends RuntimeException{
 
     public static BaseException shipmentNotFound() {
         return of(SHIPMENT_NOT_FOUND);
+    }
+
+    public static BaseException userNotFound() {
+        return of(USER_NOT_FOUND);
     }
 
     public static BaseException shipmentNotFound(Integer id) {
@@ -96,7 +98,7 @@ public class BaseException extends RuntimeException{
         return of(USER_EXISTS);
     }
 
-    public static BaseException of(ResponseMessage responseMessage) {
+    public static BaseException of(ErrorResponseMessages responseMessage) {
         return BaseException.builder().responseMessage(responseMessage).build();
     }
 

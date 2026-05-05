@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.model.response.ResponseMessage;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

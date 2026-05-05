@@ -38,21 +38,9 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/{id}")
-    public User findUserById(@PathVariable int id) {
-        return userService.findById(id);
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update/{id}")
     public UserDto updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
         return userService.update(id,userDto);
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PatchMapping("/status/{id}")
-    public UserStatusDto updateUserStatus(@PathVariable int id, @RequestBody UserStatusDto userStatusDto) {
-        return userService.updateStatus(id,userStatusDto);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -77,4 +65,31 @@ public class UserController {
     public Void deleteUser(@PathVariable int id) {
         return userService.deleteById(id);
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
+    @GetMapping("/active")
+    public List<UserDto> getAll() {
+        return userService.getAllActiveUsers();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
+    @GetMapping("/{id}")
+    public UserDto getById(@PathVariable Integer id) {
+        return userService.getActiveUserById(id);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/{id}/deactivate")
+    public String deactivate(@PathVariable Integer id) {
+        userService.deactivateUser(id);
+        return "User deactivated";
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/{id}/activate")
+    public String activate(@PathVariable Integer id) {
+        userService.activateUser(id);
+        return "User activated";
+    }
+
 }

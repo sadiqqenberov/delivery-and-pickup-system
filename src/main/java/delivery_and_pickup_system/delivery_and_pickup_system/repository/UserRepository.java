@@ -1,6 +1,7 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.repository;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.user.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +24,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select u from User u join fetch u.role where u.email = :email")
     Optional<User> findByEmailWithRole(@Param("email") String email);
+
+    List<User> findAllByStatus(UserStatus status);
+
+    Optional<User> findByIdAndStatus(Integer id, UserStatus status);
 
 }
