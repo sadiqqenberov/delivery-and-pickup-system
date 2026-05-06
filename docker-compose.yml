@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  redis:
+    container_name: delivery-pickup-system-redis
+    image: 'bitnami/redis:latest'
+    restart: always
+    environment:
+      - REDIS_PASSWORD=Sadiq2002
+    ports:
+      - '6379:6379'
+    volumes:
+      - ../../docker-volumes/delivery-pickup-system-redis:/bitnami/redis/data
