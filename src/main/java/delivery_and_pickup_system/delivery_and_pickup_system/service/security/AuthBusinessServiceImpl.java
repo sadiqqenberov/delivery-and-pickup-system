@@ -54,10 +54,9 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     }
 
     @Override
-    public Void logout() {
+    public void logout() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("{} user logout success", userDetails.getUsername());
-        return null;
+        log.info("{} user logout succeed", userDetails.getUsername());
     }
 
     @Override

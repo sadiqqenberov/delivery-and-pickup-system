@@ -12,7 +12,7 @@ public interface AuthBusinessService {
 
     LoginResponse refresh(RefreshTokenPayload payload);
 
-    Void logout();
+    void logout();
 
     void setAuthentication(String email);
 

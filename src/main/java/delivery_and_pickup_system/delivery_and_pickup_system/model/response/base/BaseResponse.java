@@ -31,7 +31,7 @@ public class BaseResponse<T> {
     }
 
     public static <T> BaseResponse<T> success() {
-        return (BaseResponse<T>) successes(null);
+        return success(null);
     }
 
     public static BaseResponse<?> error(BaseException ex) {

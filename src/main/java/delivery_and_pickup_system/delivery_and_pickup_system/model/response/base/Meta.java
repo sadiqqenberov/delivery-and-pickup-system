@@ -25,8 +25,8 @@ public final class Meta {
                 .build();
     }
 
-    public static Meta of(ResponseMessage responseMessage) {
-        return of(responseMessage.key(), responseMessage.message());
+    public static Meta of(ResponseMessage responseMessages) {
+        return of(responseMessages.key(), responseMessages.message());
     }
 
 

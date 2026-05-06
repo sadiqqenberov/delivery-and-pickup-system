@@ -30,10 +30,10 @@ public class SwaggerConfig {
         contact.setUrl("https://www.sadiqqenberov.com");
 
         Info info = new Info()
-                .title("Course ERP API")
+                .title("Delivery and Pickup API")
                 .version("1.0")
                 .contact(contact)
-                .description("This API exposes endpoints to manage tutorials.")
+                .description("This API is used for cargo post services.")
                 .termsOfService("https://www.sadiqqenberov.com/terms");
 
         return new OpenAPI().info(info)
