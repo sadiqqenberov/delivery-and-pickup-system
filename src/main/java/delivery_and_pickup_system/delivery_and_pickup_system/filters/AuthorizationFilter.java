@@ -1,6 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.filters;
 
-import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseException;
+import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserSessionRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.security.AccessTokenManager;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.security.AuthBusinessService;
 import io.jsonwebtoken.JwtException;
@@ -25,6 +25,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     private final AccessTokenManager accessTokenManager;
     private final AuthBusinessService authBusinessService;
+    private final UserSessionRepository userSessionRepository;
 
     @Override
     protected void doFilterInternal(
@@ -33,31 +34,44 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-
         try {
-            if (header != null && header.startsWith(PREFIX)) {
 
-                String token = header.substring(PREFIX.length());
+            String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-                String email = accessTokenManager.getEmail(token);
-
-                authBusinessService.setAuthentication(email);
+            if (header == null || !header.startsWith(PREFIX)) {
+                filterChain.doFilter(request, response);
+                return;
             }
+
+            String token = header.substring(PREFIX.length()).trim();
+
+            String email = accessTokenManager.getEmail(token);
+
+            if (email == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+
+            boolean exists = userSessionRepository
+                    .findByAccessToken(token)
+                    .isPresent();
+
+            if (!exists) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+
+            authBusinessService.setAuthentication(email);
 
             filterChain.doFilter(request, response);
 
-        } catch (JwtException | BaseException ex) {
-
-            log.warn("Invalid JWT: {}", ex.getMessage());
+        } catch (JwtException ex) {
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
 
         } catch (Exception ex) {
 
-            log.error("Unexpected auth error", ex);
-
+            log.error("AUTH FILTER ERROR", ex);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

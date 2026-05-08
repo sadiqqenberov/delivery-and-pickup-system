@@ -7,6 +7,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.service.base.TokenR
 import delivery_and_pickup_system.delivery_and_pickup_system.service.getters.EmailGetter;
 import delivery_and_pickup_system.delivery_and_pickup_system.utils.PublicPrivateKeyUtils;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.EMAIL_KEY;
-
-
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -25,36 +23,48 @@ public class AccessTokenManager implements TokenGenerator<User>, TokenReader<Cla
 
     private final SecurityProperties properties;
 
+    private static final String EMAIL_KEY = "email";
+    private static final String USER_ID_KEY = "userId";
+
     @Override
-    public String generate(User obj) {
-        Claims claims = Jwts.claims();
-        claims.put(EMAIL_KEY, obj.getEmail());
+    public String generate(User user) {
 
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + properties.getJwt().getAccessTokenValidityTime());
-
+        Date expiration = new Date(
+                now.getTime() + properties.getJwt().getAccessTokenValidityTime()
+        );
 
         return Jwts.builder()
-                .setSubject(String.valueOf(obj.getId()))
+                .setSubject(user.getEmail()) 
+                .claim(USER_ID_KEY, user.getId())
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .addClaims(claims)
                 .signWith(PublicPrivateKeyUtils.getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
     }
 
-
     @Override
     public Claims read(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(PublicPrivateKeyUtils.getPublicKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(PublicPrivateKeyUtils.getPublicKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+        } catch (JwtException e) {
+            log.warn("Invalid JWT token: {}", e.getMessage());
+            throw new JwtException("Invalid or expired JWT token");
+        }
     }
 
     @Override
     public String getEmail(String token) {
-        return read(token).get(EMAIL_KEY, String.class);
+        return read(token).getSubject();
+    }
+
+    public Long getUserId(String token) {
+        Object value = read(token).get(USER_ID_KEY);
+        return value != null ? Long.valueOf(value.toString()) : null;
     }
 }

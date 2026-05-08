@@ -2,6 +2,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.role.RoleDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.role.RoleService;
 import lombok.AccessLevel;
@@ -30,6 +31,20 @@ public class RoleController {
     public BaseResponse<Void> deleteRole(@PathVariable Long id ) {
         roleService.deleteRole(id);
         return BaseResponse.success();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/{id}/deactivated")
+    public BaseResponse<String> deactivateRole(@PathVariable Long id) {
+        roleService.deactivateRole(id);
+        return (BaseResponse<String>) BaseResponse.successes(OrderStatus.DEACTIVATED);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/{id}/activated")
+    public BaseResponse<String> activateRole(@PathVariable Long id) {
+        roleService.activateRole(   id);
+        return (BaseResponse<String>) BaseResponse.successes(OrderStatus.ACTIVATED);
     }
 
 }

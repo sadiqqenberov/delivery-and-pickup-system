@@ -9,4 +9,8 @@ public interface RoleService {
 
     Void deleteRole(Long id);
 
+    void deactivateRole(Long id);
+
+    void activateRole(Long id);
+
 }

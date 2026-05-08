@@ -26,7 +26,10 @@ public enum OrderStatus implements ResponseMessage {
     DELETED("Silindi","Sifariş silindi", HttpStatus.OK),
     UPDATE_STATUS("Status dəyişdi","Sifarişin statusu dəyişdi", HttpStatus.OK),
     COMPLETED("","",HttpStatus.BAD_REQUEST),
+    ACTIVATED("Active oldu","Active oldu",HttpStatus.OK),
+    DEACTIVATED("Deactive oldu","Deactive oldu",HttpStatus.OK),
     ;
+
 
     private final String key;
     private final String message;

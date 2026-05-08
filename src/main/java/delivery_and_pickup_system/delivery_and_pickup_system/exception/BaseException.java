@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.AuthenticationException;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.ErrorResponseMessages.*;
@@ -44,6 +45,14 @@ public class BaseException extends RuntimeException{
 
     public static BaseException userNotFound() {
         return of(USER_NOT_FOUND);
+    }
+
+    public static BaseException sessionNotFound() {
+        return of(SESSION_NOT_FOUND);
+    }
+
+    public static BaseException userNotAuthenticated() {
+        return of(USER_NOT_AUTHENTICATED);
     }
 
     public static BaseException shipmentNotFound(Integer id) {
@@ -103,13 +112,21 @@ public class BaseException extends RuntimeException{
     }
 
 
-    public static BaseException notFound(String target,String field , Object value){
+    public static BaseException notFound(String target, String field, Object value) {
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put(
+                field != null ? field : "unknown",
+                value != null ? value : "null"
+        );
+
         return BaseException.builder()
                 .responseMessage(NOT_FOUND)
                 .notFoundData(
-                        NotFoundExceptionType.of(target, Map.of(field,value)))
+                        NotFoundExceptionType.of(target, data)
+                )
                 .build();
-
     }
 
 

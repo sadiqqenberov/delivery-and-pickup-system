@@ -25,7 +25,5 @@ public class LoginResponse {
         String name;
         String surname;
         String imageUrl;
-
-
     }
 }

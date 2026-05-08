@@ -28,6 +28,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     UserStatus status = UserStatus.ACTIVE;
+
     @Column(nullable = false, unique = true, length = 100)
     String email;
 

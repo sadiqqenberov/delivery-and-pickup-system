@@ -3,7 +3,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserRoleDto;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserStatusDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.user.UserService;
 import lombok.AccessLevel;
@@ -80,16 +80,16 @@ public class UserController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}/deactivate")
-    public String deactivate(@PathVariable Integer id) {
+    public BaseResponse<String> deactivate(@PathVariable Integer id) {
         userService.deactivateUser(id);
-        return "User deactivated";
+        return (BaseResponse<String>) BaseResponse.successes(OrderStatus.DEACTIVATED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}/activate")
-    public String activate(@PathVariable Integer id) {
+    public BaseResponse<String> activate(@PathVariable Integer id) {
         userService.activateUser(id);
-        return "User activated";
+        return (BaseResponse<String>) BaseResponse.successes(OrderStatus.ACTIVATED);
     }
 
 }

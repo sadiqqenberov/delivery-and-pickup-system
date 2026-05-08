@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="create-user-sessions-table" author="sadiq">
+
+        <createTable tableName="user_sessions">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="access_token" type="VARCHAR(1000)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="refresh_token" type="VARCHAR(1000)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+
+            <column name="created_at_access_token" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at_refresh_token" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="access_token_expires_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="refresh_token_expires_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="user_sessions"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_user_sessions_user"/>
+
+    </changeSet>
+
+</databaseChangeLog>
