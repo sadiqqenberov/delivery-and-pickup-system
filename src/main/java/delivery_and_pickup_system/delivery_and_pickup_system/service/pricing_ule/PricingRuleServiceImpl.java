@@ -8,6 +8,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.pricingRu
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.pricingRule.PricingRuleDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.pricing_rule.RuleDelivery;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.PricingRuleRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,7 @@ public class PricingRuleServiceImpl implements PricingRuleService {
         return pricingRuleRepository.findAll();
     }
 
+    @Transactional
     @Override
     public PricingRuleDto update(int id, PricingRuleDto pricingRuleDto) {
 
@@ -69,6 +71,7 @@ public class PricingRuleServiceImpl implements PricingRuleService {
         return pricingMapper.toDto(updated);
     }
 
+    @Transactional
     @Override
     public PricingRule create(PricingRuleDto pricingRuleDto) {
 

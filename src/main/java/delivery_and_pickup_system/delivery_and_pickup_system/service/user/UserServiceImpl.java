@@ -13,6 +13,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.user.Us
 import delivery_and_pickup_system.delivery_and_pickup_system.model.security.LoggedInUserDetails;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.RoleRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -43,11 +44,13 @@ public class UserServiceImpl implements UserService {
                 );
     }
 
+    @Transactional
     @Override
     public User creatUser(UserDto userDto) {
 
         Role role = roleRepository.findByRoleName(userDto.getRole())
                 .orElseThrow(BaseException::roleNotFound);
+
 
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw BaseException.userExists();
@@ -88,6 +91,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public UserDto update(int id, UserDto userDto) {
 
@@ -107,6 +111,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(userRepository.save(user));
     }
 
+    @Transactional
     @Override
     public UserRoleDto updateUserRole(int id, UserRoleDto userRoleDto) {
 
@@ -142,6 +147,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
+    @Transactional
     @Override
     public Void deleteById(int id) {
 
@@ -167,6 +173,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
+    @Transactional
     @Override
     public void deactivateUser(Integer id) {
 
@@ -177,6 +184,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public void activateUser(Integer id) {
 

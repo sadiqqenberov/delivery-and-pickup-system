@@ -13,6 +13,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_hi
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -30,6 +31,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final ShipmentMapper shipmentMapper;
     private final UserRepository userRepository;
 
+    @Transactional
     @Override
     public TrackingResponse createShipment(ShipmentDto dto) {
 
@@ -76,7 +78,8 @@ public class ShipmentServiceImpl implements ShipmentService {
     @Override
     public ShipmentDto findById(int id) {
 
-        Shipment shipment = shipmentRepository.findById(id);
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(BaseException::shipmentNotFound);
         return shipmentMapper.toDto(shipment);
     }
 
@@ -87,10 +90,12 @@ public class ShipmentServiceImpl implements ShipmentService {
                 .map(shipmentMapper::toResponseDto);
     }
 
+    @Transactional
     @Override
     public ShipmentDto update(int id, ShipmentDto shipmentDto) {
 
-        Shipment shipment = shipmentRepository.findById(id);
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(BaseException::shipmentNotFound);
 
         shipmentMapper.updateShipmentFromDto(shipmentDto, shipment);
 
@@ -99,6 +104,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         return shipmentMapper.toDto(updated);
     }
 
+    @Transactional
     @Override
     public void cancelShipment(Integer id) {
 
@@ -117,6 +123,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         shipmentRepository.save(shipment);
     }
 
+    @Transactional
     @Override
     public void deleteShipment(int id) {
         shipmentRepository.deleteById(id);

@@ -9,6 +9,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.R
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ReturnRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,6 +26,7 @@ public class ReturnServiceImpl implements ReturnService {
     ShipmentRepository shipmentRepository;
     ReturnMapper returnMapper;
 
+    @Transactional
     @Override
     public ReturnResponseDto initiate(ReturnRequestDto dto) {
 
@@ -37,11 +39,14 @@ public class ReturnServiceImpl implements ReturnService {
                 .status(OrderStatus.RETURN_REQUESTED)
                 .build();
 
+        ret.setStatus(OrderStatus.RETURN_REQUESTED);
         shipment.setStatus(OrderStatus.RETURN_REQUESTED);
+        shipmentRepository.save(shipment);
 
         return returnMapper.toDto(returnRepository.save(ret));
     }
 
+    @Transactional
     @Override
     public ReturnResponseDto approve(Integer id) {
 
@@ -57,10 +62,12 @@ public class ReturnServiceImpl implements ReturnService {
 
         ret.setStatus(OrderStatus.RETURN_IN_PROGRESS);
         shipment.setStatus(OrderStatus.RETURN_IN_PROGRESS);
+        shipmentRepository.save(shipment);
 
         return returnMapper.toDto(returnRepository.save(ret));
     }
 
+    @Transactional
     @Override
     public ReturnResponseDto complete(Integer id) {
 
@@ -78,6 +85,7 @@ public class ReturnServiceImpl implements ReturnService {
         ret.setReturnedAt(LocalDateTime.now());
 
         shipment.setStatus(OrderStatus.RETURNED);
+        shipmentRepository.save(shipment);
 
         return returnMapper.toDto(returnRepository.save(ret));
     }

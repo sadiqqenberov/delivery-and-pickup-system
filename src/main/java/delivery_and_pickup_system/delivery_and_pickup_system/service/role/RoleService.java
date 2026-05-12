@@ -7,7 +7,7 @@ public interface RoleService {
 
     Role createRole(RoleDto roleDto);
 
-    Void deleteRole(Long id);
+    void deleteRole(Long id);
 
     void deactivateRole(Long id);
 

@@ -41,7 +41,7 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+//    private final JwtService jwtService;
     private final UserSessionRepository sessionRepository;
 
     @Override
@@ -52,8 +52,8 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
         User user = userRepository.findByEmail(payload.getEmail())
                 .orElseThrow(BaseException::notFound);
 
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user, payload.isRememberMe());
+        String accessToken = accessTokenManager.generateAccessToken(user);
+        String refreshToken = accessTokenManager.generateRefreshToken(user, payload.isRememberMe());
 
         saveSession(user, accessToken, refreshToken);
 

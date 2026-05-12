@@ -23,8 +23,7 @@ public class SourceController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{userId}")
     public BaseResponse<SourceResponse> getSource( @PathVariable Integer userId) {
-        return BaseResponse.success(
-                sourceService.getSource(userId)
+        return BaseResponse.success(sourceService.getSource(userId)
         );
     }
 }

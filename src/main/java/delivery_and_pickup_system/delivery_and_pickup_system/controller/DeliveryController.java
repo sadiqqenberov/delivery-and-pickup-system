@@ -20,27 +20,27 @@ public class DeliveryController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN','COURIER')")
     @PostMapping("/start")
-    public BaseResponse<DeliveryResponseDto> start(@RequestBody StartDeliveryRequestDto dto) {
+    public BaseResponse<?> start(@RequestBody StartDeliveryRequestDto dto) {
 
          deliveryService.startDelivery(dto);
 
-         return (BaseResponse<DeliveryResponseDto>) BaseResponse.successes(OrderStatus.IN_TRANSIT);
+         return BaseResponse.successes(OrderStatus.IN_TRANSIT);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','COURIER')")
     @PostMapping("/confirm")
-    public BaseResponse<DeliveryResponseDto> confirm(@RequestBody ConfirmDeliveryRequestDto dto) {
+    public BaseResponse<?> confirm(@RequestBody ConfirmDeliveryRequestDto dto) {
         deliveryService.confirmDelivery(dto);
 
-        return (BaseResponse<DeliveryResponseDto>) BaseResponse.successes(OrderStatus.DELIVERED);
+        return BaseResponse.successes(OrderStatus.DELIVERED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','COURIER')")
     @PostMapping("/fail")
-    public BaseResponse<FailedDeliveryResponseDto> fail(@RequestBody FailDeliveryRequestDto dto) {
+    public BaseResponse<?> fail(@RequestBody FailDeliveryRequestDto dto) {
         deliveryService.failDelivery(dto);
 
-        return (BaseResponse<FailedDeliveryResponseDto>) BaseResponse.successes(OrderStatus.DELIVERY_ATTEMPT_FAILED);
+        return BaseResponse.successes(OrderStatus.DELIVERY_ATTEMPT_FAILED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")

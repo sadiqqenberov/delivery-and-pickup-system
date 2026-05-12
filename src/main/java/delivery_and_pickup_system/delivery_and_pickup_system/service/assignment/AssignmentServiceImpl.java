@@ -9,6 +9,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.assignmen
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.AssignmentRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +31,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     private final UserRepository userRepository;
     private final AssignmentMapper assignmentMapper;
 
+    @Transactional
     @Override
     public AssignmentDto createAssignment(AssignmentDto assignmentDto) {
 
@@ -61,6 +63,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         return assignmentMapper.toDto(assignment);
     }
 
+    @Transactional
     @Override
     public AssignmentDto update(int id, AssignmentDto assignmentDto) {
 

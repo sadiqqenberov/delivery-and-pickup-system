@@ -25,6 +25,8 @@ public class AccessTokenManager implements TokenGenerator<User>, TokenReader<Cla
 
     private static final String EMAIL_KEY = "email";
     private static final String USER_ID_KEY = "userId";
+    private static final long ACCESS_EXP = 1000 * 60 * 15;
+    private static final long REFRESH_EXP = 1000L * 60 * 60 * 24 * 7;
 
     @Override
     public String generate(User user) {
@@ -66,5 +68,31 @@ public class AccessTokenManager implements TokenGenerator<User>, TokenReader<Cla
     public Long getUserId(String token) {
         Object value = read(token).get(USER_ID_KEY);
         return value != null ? Long.valueOf(value.toString()) : null;
+    }
+
+    public String generateAccessToken(User user) {
+
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_EXP))
+                .signWith(PublicPrivateKeyUtils.getPrivateKey(), SignatureAlgorithm.RS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(User user, boolean rememberMe) {
+
+        long exp = rememberMe
+                ? REFRESH_EXP
+                : (1000L * 60 * 60 * 24);
+
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + exp))
+                .signWith(PublicPrivateKeyUtils.getPrivateKey(), SignatureAlgorithm.RS256)
+                .compact();
     }
 }

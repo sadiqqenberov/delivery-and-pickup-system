@@ -14,7 +14,7 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
 
     Optional<Shipment> findByTrackingNumber(String trackingNumber);
 
-    Shipment findById(int id);
+    Optional<Shipment> findById(int id);
 
     void deleteById(int id);
 

@@ -12,6 +12,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.repository.Delivery
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.FailedDeliveryRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final DeliveryMapper deliveryMapper;
     private final FailedDeliveryRepository failedDeliveryRepository;
 
+    @Transactional
     @Override
     public DeliveryResponseDto startDelivery(StartDeliveryRequestDto dto) {
 
@@ -44,12 +46,14 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setStartedAt(LocalDateTime.now());
 
         shipment.setStatus(OrderStatus.IN_TRANSIT);
+        shipmentRepository.save(shipment);
 
         Delivery saved = deliveryRepository.save(delivery);
 
         return deliveryMapper.toDto(saved);
     }
 
+    @Transactional
     @Override
     public DeliveryResponseDto confirmDelivery(ConfirmDeliveryRequestDto dto) {
 
@@ -68,6 +72,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryMapper.toDto(saved);
     }
 
+    @Transactional
     @Override
     public FailedDeliveryResponseDto failDelivery(FailDeliveryRequestDto dto) {
 
@@ -75,6 +80,7 @@ public class DeliveryServiceImpl implements DeliveryService {
                 .orElseThrow(BaseException::shipmentNotFound);
 
         shipment.setStatus(OrderStatus.DELIVERY_ATTEMPT_FAILED);
+        shipmentRepository.save(shipment);
 
         FailedDelivery failed = FailedDelivery.builder()
                 .shipment(shipment)
@@ -86,6 +92,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveryMapper.toDto(saved);
     }
 
+    @Transactional
     @Override
     public DeliveryResponseDto rescheduleDelivery(RescheduleDeliveryRequestDto dto) {
 

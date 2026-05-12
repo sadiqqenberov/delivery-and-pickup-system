@@ -80,16 +80,16 @@ public class UserController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}/deactivate")
-    public BaseResponse<String> deactivate(@PathVariable Integer id) {
+    public BaseResponse<?> deactivate(@PathVariable Integer id) {
         userService.deactivateUser(id);
-        return (BaseResponse<String>) BaseResponse.successes(OrderStatus.DEACTIVATED);
+        return BaseResponse.successes(OrderStatus.DEACTIVATED);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}/activate")
-    public BaseResponse<String> activate(@PathVariable Integer id) {
+    public BaseResponse<?> activate(@PathVariable Integer id) {
         userService.activateUser(id);
-        return (BaseResponse<String>) BaseResponse.successes(OrderStatus.ACTIVATED);
+        return BaseResponse.successes(OrderStatus.ACTIVATED);
     }
 
 }

@@ -61,7 +61,7 @@ public class ShipmentController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @PatchMapping("/{id}/cancel")
-    public BaseResponse<OrderStatus> cancelShipment(@PathVariable Integer id) {
+    public BaseResponse<?> cancelShipment(@PathVariable Integer id) {
 
         shipmentService.cancelShipment(id);
 
