@@ -15,7 +15,8 @@ import org.mapstruct.*;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL
-)public interface ReportMapper {
+)
+public interface ReportMapper {
 
     @Mapping(target = "trackingNumber", source = "shipment.trackingNumber")
     @Mapping(target = "courierName", source = "courier.name")

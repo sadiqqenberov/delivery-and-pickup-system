@@ -14,7 +14,6 @@ import delivery_and_pickup_system.delivery_and_pickup_system.repository.Shipment
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,12 +42,13 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setShipment(shipment);
         delivery.setCourier(courier);
         delivery.setStartedAt(LocalDateTime.now());
+
         shipment.setStatus(OrderStatus.IN_TRANSIT);
+
         Delivery saved = deliveryRepository.save(delivery);
 
         return deliveryMapper.toDto(saved);
     }
-
 
     @Override
     public DeliveryResponseDto confirmDelivery(ConfirmDeliveryRequestDto dto) {
@@ -74,11 +74,12 @@ public class DeliveryServiceImpl implements DeliveryService {
         Shipment shipment = shipmentRepository.findById(dto.getShipmentId())
                 .orElseThrow(BaseException::shipmentNotFound);
 
+        shipment.setStatus(OrderStatus.DELIVERY_ATTEMPT_FAILED);
+
         FailedDelivery failed = FailedDelivery.builder()
                 .shipment(shipment)
                 .note(dto.getNote())
                 .build();
-        shipment.setStatus(OrderStatus.DELIVERY_ATTEMPT_FAILED);
 
         FailedDelivery saved = failedDeliveryRepository.save(failed);
 

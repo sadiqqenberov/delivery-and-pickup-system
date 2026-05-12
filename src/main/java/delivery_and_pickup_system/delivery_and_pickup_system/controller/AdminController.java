@@ -13,15 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminController {
 
-    private final AdminService adminDashboardService;
+    AdminService adminService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public DashboardResponseDto getDashboard() {
-        return adminDashboardService.getDashboardStats();
+        return adminService.getDashboardStats();
     }
-
 }

@@ -20,7 +20,6 @@ public class AdminServiceImpl implements AdminService {
     public DashboardResponseDto getDashboardStats() {
 
         long totalUsers = userRepository.count();
-
         long totalShipments = shipmentRepository.count();
 
         long delivered = shipmentRepository.countByStatus(OrderStatus.DELIVERED);

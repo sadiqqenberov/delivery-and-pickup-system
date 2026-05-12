@@ -5,6 +5,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnRequestDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnResponseDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -17,6 +18,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 )
 public interface ReturnMapper {
 
+    @Mapping(target = "shipment", source = "shipment")
     Return toEntity(ReturnRequestDto dto, Shipment shipment);
 
     ReturnResponseDto toDto(Return entity);

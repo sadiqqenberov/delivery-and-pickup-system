@@ -1,5 +1,6 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.filters;
 
+import delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserSessionRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.security.AccessTokenManager;
 import delivery_and_pickup_system.delivery_and_pickup_system.service.security.AuthBusinessService;
@@ -15,8 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
-import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.PREFIX;
 
 @Component
 @RequiredArgsConstructor
@@ -38,13 +37,12 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
             String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-            if (header == null || !header.startsWith(PREFIX)) {
+            if (header == null || !header.startsWith(TokenConstants.PREFIX)) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            String token = header.substring(PREFIX.length()).trim();
-
+            String token = header.substring(TokenConstants.PREFIX.length()).trim();
             String email = accessTokenManager.getEmail(token);
 
             if (email == null) {
@@ -52,9 +50,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            boolean exists = userSessionRepository
-                    .findByAccessToken(token)
-                    .isPresent();
+            boolean exists = userSessionRepository.findByAccessToken(token).isPresent();
 
             if (!exists) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);

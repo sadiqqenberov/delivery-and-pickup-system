@@ -20,46 +20,55 @@ public class PublicPrivateKeyUtils {
 
     @Getter
     private static PrivateKey privateKey;
+
     @Getter
     private static PublicKey publicKey;
 
     public PublicPrivateKeyUtils(SecurityProperties securityProperties) {
+
         this.securityProperties = securityProperties;
+
         privateKey = preparePrivateKey();
         publicKey = preparePublicKey();
     }
 
-
     private PrivateKey preparePrivateKey() {
+
         try {
+
             KeyFactory kf = KeyFactory.getInstance("RSA");
+
             PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(
-                    Base64
-                            .getDecoder()
-                            .decode(securityProperties
-                                    .getJwt()
-                                    .getPrivateKey())
+                    Base64.getDecoder()
+                            .decode(securityProperties.getJwt().getPrivateKey())
             );
+
             return kf.generatePrivate(keySpecPKCS8);
+
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
     private PublicKey preparePublicKey() {
+
         try {
+
             KeyFactory kf = KeyFactory.getInstance("RSA");
+
             X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(
-                    Base64
-                            .getDecoder()
-                            .decode(securityProperties
-                                    .getJwt()
-                                    .getPublicKey()));
+                    Base64.getDecoder()
+                            .decode(securityProperties.getJwt().getPublicKey())
+            );
+
             return kf.generatePublic(keySpecX509);
+
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

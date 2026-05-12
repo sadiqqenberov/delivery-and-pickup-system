@@ -30,12 +30,12 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final ShipmentMapper shipmentMapper;
     private final UserRepository userRepository;
 
-
     @Override
     public TrackingResponse createShipment(ShipmentDto dto) {
 
         User user = userRepository.findFirstByNameAndSurname(
-                dto.getCreatedByName(), dto.getCreatedBySurname()
+                dto.getCreatedByName(),
+                dto.getCreatedBySurname()
         ).orElseThrow(BaseException::notFound);
 
         Shipment shipment = shipmentMapper.toEntity(dto);
@@ -51,14 +51,21 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Override
     public MappingJacksonValue findAll() {
-        List<Shipment> shipments = shipmentRepository.findAll();
 
+        List<Shipment> shipments = shipmentRepository.findAll();
         List<ShipmentResponseDto> shipmentDtos = shipmentMapper.toDtoList(shipments);
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
-                .filterOutAllExcept("trackingNumber", "senderName", "senderPhone", "receiverName", "receiverPhone");
+                .filterOutAllExcept(
+                        "trackingNumber",
+                        "senderName",
+                        "senderPhone",
+                        "receiverName",
+                        "receiverPhone"
+                );
 
-        FilterProvider provider = new SimpleFilterProvider().addFilter("shipments", filter);
+        FilterProvider provider = new SimpleFilterProvider()
+                .addFilter("shipments", filter);
 
         MappingJacksonValue value = new MappingJacksonValue(shipmentDtos);
         value.setFilters(provider);
@@ -68,26 +75,28 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Override
     public ShipmentDto findById(int id) {
-        Shipment shipment = shipmentRepository.findById(id);
 
+        Shipment shipment = shipmentRepository.findById(id);
         return shipmentMapper.toDto(shipment);
     }
 
     @Override
     public Optional<TrackingResponse> findByTrackingNumber(String trackingNumber) {
+
         return shipmentRepository.findByTrackingNumber(trackingNumber)
                 .map(shipmentMapper::toResponseDto);
     }
 
     @Override
     public ShipmentDto update(int id, ShipmentDto shipmentDto) {
+
         Shipment shipment = shipmentRepository.findById(id);
 
         shipmentMapper.updateShipmentFromDto(shipmentDto, shipment);
 
-        Shipment shipmentUpdate = shipmentRepository.save(shipment);
-        return shipmentMapper.toDto(shipmentUpdate);
+        Shipment updated = shipmentRepository.save(shipment);
 
+        return shipmentMapper.toDto(updated);
     }
 
     @Override
@@ -105,7 +114,6 @@ public class ShipmentServiceImpl implements ShipmentService {
         }
 
         shipment.setStatus(OrderStatus.CANCELLED);
-
         shipmentRepository.save(shipment);
     }
 
@@ -113,5 +121,4 @@ public class ShipmentServiceImpl implements ShipmentService {
     public void deleteShipment(int id) {
         shipmentRepository.deleteById(id);
     }
-
 }

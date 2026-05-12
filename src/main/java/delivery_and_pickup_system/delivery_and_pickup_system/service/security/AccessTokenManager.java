@@ -35,7 +35,7 @@ public class AccessTokenManager implements TokenGenerator<User>, TokenReader<Cla
         );
 
         return Jwts.builder()
-                .setSubject(user.getEmail()) 
+                .setSubject(user.getEmail())
                 .claim(USER_ID_KEY, user.getId())
                 .setIssuedAt(now)
                 .setExpiration(expiration)

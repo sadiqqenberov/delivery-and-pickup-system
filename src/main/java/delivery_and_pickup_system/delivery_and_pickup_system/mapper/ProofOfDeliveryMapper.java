@@ -14,5 +14,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL
 )
 public interface ProofOfDeliveryMapper {
+
     ProofOfDeliveryResponseDto toDto(ProofOfDelivery entity);
 }

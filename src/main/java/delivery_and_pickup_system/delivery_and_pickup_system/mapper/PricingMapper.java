@@ -21,6 +21,10 @@ public interface PricingMapper {
                 .build();
     }
 
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "trackingNumber", ignore = true)
+    PricingRule toEntity(PricingRuleDto dto);
+
     void updatePricingRuleFromDto (PricingRuleDto dto ,@MappingTarget PricingRule pricingRule);
 
     PricingRuleDto toDto (PricingRule pricingRule);

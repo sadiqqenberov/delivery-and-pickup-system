@@ -7,7 +7,6 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.StatusHi
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusHistoryDTO;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.StatusResponseDto;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.status_history.TrackingResponse;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.StatusHistoryRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
@@ -31,7 +30,6 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
     private final StatusHistoryMapper statusHistoryMapper;
     private final UserRepository userRepository;
 
-
     @Override
     public void updateShipmentStatus(Integer id, StatusHistoryDTO request) {
 
@@ -41,10 +39,14 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
         shipment.setStatus(request.getStatus());
         shipmentRepository.save(shipment);
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
 
         User currentUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), EMAIL_KEY, email));
+                .orElseThrow(() ->
+                        BaseException.notFound(User.class.getSimpleName(), EMAIL_KEY, email)
+                );
 
         StatusHistory history = StatusHistory.builder()
                 .shipment(shipment)
@@ -72,13 +74,13 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
 
     @Override
     public StatusResponseDto getTrackingInfo(String trackingNumber) {
+
         Shipment shipment = shipmentRepository.findByTrackingNumber(trackingNumber)
                 .orElseThrow(BaseException::trackingNumberNotFound);
 
-        List<StatusHistory> historyList = historyRepository
-                .findAllByShipmentIdOrderByChangedAtDesc(shipment.getId());
+        List<StatusHistory> historyList =
+                historyRepository.findAllByShipmentIdOrderByChangedAtDesc(shipment.getId());
 
         return statusHistoryMapper.toStatusResponseDto(shipment);
     }
-
 }

@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/assignments")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AssignmentController {
 
-    private final AssignmentService assignmentService;
+    AssignmentService assignmentService;
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @PostMapping
@@ -28,12 +27,15 @@ public class AssignmentController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")
     @PutMapping("/update/{id}")
-    public AssignmentDto updateShipment(@PathVariable("id") int id, @RequestBody AssignmentDto assignmentDto) {
-        return assignmentService.update(id,assignmentDto);
+    public AssignmentDto updateShipment(
+            @PathVariable("id") int id,
+            @RequestBody AssignmentDto assignmentDto
+    ) {
+        return assignmentService.update(id, assignmentDto);
     }
 
     @PreAuthorize("hasAuthority('COURIER')")
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public AssignmentDto findById(@PathVariable("id") int id) {
         return assignmentService.findById(id);
     }

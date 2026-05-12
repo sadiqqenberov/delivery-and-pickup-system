@@ -4,8 +4,8 @@ import delivery_and_pickup_system.delivery_and_pickup_system.exception.BaseExcep
 import delivery_and_pickup_system.delivery_and_pickup_system.mapper.ReturnMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Return;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnResponseDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnRequestDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.returnn.ReturnResponseDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ReturnRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
@@ -36,25 +36,27 @@ public class ReturnServiceImpl implements ReturnService {
                 .reason(dto.getReason())
                 .status(OrderStatus.RETURN_REQUESTED)
                 .build();
-        shipment.setStatus(OrderStatus.RETURN_REQUESTED)    ;
+
+        shipment.setStatus(OrderStatus.RETURN_REQUESTED);
 
         return returnMapper.toDto(returnRepository.save(ret));
     }
 
     @Override
     public ReturnResponseDto approve(Integer id) {
-        Shipment shipment = shipmentRepository.findById(id)
-                .orElseThrow(BaseException::shipmentNotFound);
 
         Return ret = returnRepository.findById(id)
                 .orElseThrow(() -> BaseException.returnRequestNotFound(id));
+
+        Shipment shipment = shipmentRepository.findById(ret.getShipment().getId())
+                .orElseThrow(BaseException::shipmentNotFound);
 
         if (ret.getStatus() != OrderStatus.RETURN_REQUESTED) {
             throw BaseException.cancelledReturnCannotCompleted();
         }
 
         ret.setStatus(OrderStatus.RETURN_IN_PROGRESS);
-        shipment.setStatus(OrderStatus.RETURN_REQUESTED)    ;
+        shipment.setStatus(OrderStatus.RETURN_IN_PROGRESS);
 
         return returnMapper.toDto(returnRepository.save(ret));
     }
@@ -62,10 +64,11 @@ public class ReturnServiceImpl implements ReturnService {
     @Override
     public ReturnResponseDto complete(Integer id) {
 
-        Shipment shipment = shipmentRepository.findById(id)
-                .orElseThrow(BaseException::shipmentNotFound);
         Return ret = returnRepository.findById(id)
                 .orElseThrow(() -> BaseException.returnRequestNotFound(id));
+
+        Shipment shipment = shipmentRepository.findById(ret.getShipment().getId())
+                .orElseThrow(BaseException::shipmentNotFound);
 
         if (ret.getStatus() != OrderStatus.RETURN_IN_PROGRESS) {
             throw BaseException.cancelledReturnCannotCompleted();
@@ -73,7 +76,8 @@ public class ReturnServiceImpl implements ReturnService {
 
         ret.setStatus(OrderStatus.RETURNED);
         ret.setReturnedAt(LocalDateTime.now());
-        shipment.setStatus(OrderStatus.RETURN_REQUESTED)    ;
+
+        shipment.setStatus(OrderStatus.RETURNED);
 
         return returnMapper.toDto(returnRepository.save(ret));
     }
@@ -83,5 +87,4 @@ public class ReturnServiceImpl implements ReturnService {
         return returnRepository.findById(id)
                 .orElseThrow(() -> BaseException.returnRequestNotFound(id));
     }
-
 }

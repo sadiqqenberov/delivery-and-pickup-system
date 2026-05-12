@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
-
 
     private final CustomerRepository customerRepository;
     private final ShipmentMapper shipmentMapper;
@@ -35,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
     public TrackingResponse getTracking(String trackingNumber) {
 
         Shipment shipment = customerRepository.findByTrackingNumber(trackingNumber)
-                .orElseThrow(() -> BaseException.shipmentNotFound(Integer.valueOf(trackingNumber)));
+                .orElseThrow(BaseException::shipmentNotFound);
 
         return shipmentMapper.toResponseDto(shipment);
     }

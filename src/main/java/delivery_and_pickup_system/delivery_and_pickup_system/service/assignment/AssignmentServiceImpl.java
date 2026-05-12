@@ -20,12 +20,10 @@ import java.util.List;
 import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.EMAIL_KEY;
 import static delivery_and_pickup_system.delivery_and_pickup_system.constans.TokenConstants.ID_KEY;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AssignmentServiceImpl implements AssignmentService {
-
 
     private final AssignmentRepository assignmentRepository;
     private final ShipmentRepository shipmentRepository;
@@ -34,6 +32,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public AssignmentDto createAssignment(AssignmentDto assignmentDto) {
+
         Shipment shipment = shipmentRepository.findById(assignmentDto.getShipmentId())
                 .orElseThrow(BaseException::shipmentNotFound);
 
@@ -46,35 +45,44 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .assignedAt(LocalDateTime.now())
                 .build();
 
-        assignmentRepository.save(assignment);
+        Assignment saved = assignmentRepository.save(assignment);
 
-        return assignmentDto;
+        return assignmentMapper.toDto(saved);
     }
 
     @Override
     public AssignmentDto findById(int id) {
+
         Assignment assignment = assignmentRepository.findById(id)
-                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), ID_KEY, id));
+                .orElseThrow(() ->
+                        BaseException.notFound(User.class.getSimpleName(), ID_KEY, id)
+                );
 
         return assignmentMapper.toDto(assignment);
     }
 
     @Override
     public AssignmentDto update(int id, AssignmentDto assignmentDto) {
-        Assignment assignment = (Assignment) assignmentRepository.findByCourierId(id);
+
+        Assignment assignment = assignmentRepository.findById(id)
+                .orElseThrow(() ->
+                        BaseException.notFound(Assignment.class.getSimpleName(), ID_KEY, id)
+                );
 
         assignmentMapper.updateFromDto(assignmentDto, assignment);
 
-        Assignment updatedAssignment = assignmentRepository.save(assignment);
+        Assignment updated = assignmentRepository.save(assignment);
 
-        return assignmentMapper.toDto(updatedAssignment);
+        return assignmentMapper.toDto(updated);
     }
 
     @Override
     public List<AssignmentDto> getAssignmentsByCourierId(Integer courierId) {
-        return assignmentMapper.toDtoList(
-                assignmentRepository.findByCourierId(courierId)
-        );
+
+        List<Assignment> assignments =
+                assignmentRepository.findByCourierId(courierId);
+
+        return assignmentMapper.toDtoList(assignments);
     }
 
     @Override
@@ -85,9 +93,13 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> BaseException.notFound(User.class.getSimpleName(), EMAIL_KEY, email));
+                .orElseThrow(() ->
+                        BaseException.notFound(User.class.getSimpleName(), EMAIL_KEY, email)
+                );
 
-        return assignmentRepository.findAllByCourierId(user.getId());
+        List<Assignment> assignments =
+                assignmentRepository.findByCourierId(user.getId());
+
+        return assignmentMapper.toDtoList(assignments);
     }
-
 }

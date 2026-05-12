@@ -20,13 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 
@@ -45,7 +43,6 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final UserSessionRepository sessionRepository;
-
 
     @Override
     public LoginResponse login(LoginPayload payload) {
@@ -72,9 +69,12 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     }
 
     @Override
-    public LoginResponse refresh(@RequestBody RefreshTokenPayload payload) {
+    public LoginResponse refresh(RefreshTokenPayload payload) {
 
-        return prepareLoginResponse(refreshTokenManager.getEmail(payload.getRefreshToken()), payload.isRememberMe());
+        return prepareLoginResponse(
+                refreshTokenManager.getEmail(payload.getRefreshToken()),
+                payload.isRememberMe()
+        );
     }
 
     @Override
@@ -95,11 +95,17 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     }
 
     @Override
-    public void setAuthentication(@RequestBody String email) {
+    public void setAuthentication(String email) {
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
+                new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                )
+        );
     }
 
     @Override
@@ -109,23 +115,19 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
                 .orElseThrow(BaseException::roleNotFound);
 
         User user = new User();
-
         user.setEmail(payload.getEmail());
-
         user.setPassword(passwordEncoder.encode(payload.getPassword()));
-
         user.setName(payload.getName());
+        user.setSurname(payload.getSurname());
         user.setPhoneNumber(payload.getPhoneNumber());
         user.setAddress(payload.getAddress());
-        user.setSurname(payload.getSurname());
-
         user.setRole(role);
 
         return userRepository.save(user);
     }
 
-
     private void authenticate(LoginPayload payload) {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         payload.getEmail(),
@@ -135,17 +137,19 @@ public class AuthBusinessServiceImpl implements AuthBusinessService {
     }
 
     private LoginResponse prepareLoginResponse(String email, boolean rememberMe) {
+
         User user = userService.getByEmail(email);
 
         return LoginResponse.builder()
-                .accessToken(accessTokenManager
-                        .generate(user))
-                .refreshToken(refreshTokenManager
-                        .generate(RefreshTokenDto
-                                .builder()
-                                .user(user)
-                                .rememberMe(rememberMe)
-                                .build()))
+                .accessToken(accessTokenManager.generate(user))
+                .refreshToken(
+                        refreshTokenManager.generate(
+                                RefreshTokenDto.builder()
+                                        .user(user)
+                                        .rememberMe(rememberMe)
+                                        .build()
+                        )
+                )
                 .build();
     }
 

@@ -9,7 +9,6 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserRoleDto;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserStatusDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.user.UserStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.security.LoggedInUserDetails;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.RoleRepository;
@@ -37,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByEmail(String email) {
+
         return userRepository.findByEmailWithRole(email)
                 .orElseThrow(() ->
                         BaseException.notFound(User.class.getSimpleName(), EMAIL_KEY, email)
@@ -69,13 +69,13 @@ public class UserServiceImpl implements UserService {
     public MappingJacksonValue findAll() {
 
         List<User> users = userRepository.findAll();
-
         List<UserDto> userDtos = userMapper.toDtoList(users);
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
                 .filterOutAllExcept("id", "name", "surname", "phoneNumber", "address");
 
-        FilterProvider provider = new SimpleFilterProvider().addFilter("users", filter);
+        FilterProvider provider = new SimpleFilterProvider()
+                .addFilter("users", filter);
 
         MappingJacksonValue value = new MappingJacksonValue(userDtos);
         value.setFilters(provider);
@@ -95,7 +95,9 @@ public class UserServiceImpl implements UserService {
 
         userMapper.updateUserFromDto(userDto, user);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
         if (userDto.getRole() != null) {
+
             Role role = roleRepository.findByRoleName(userDto.getRole())
                     .orElseThrow(BaseException::roleNotFound);
 
@@ -107,6 +109,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRoleDto updateUserRole(int id, UserRoleDto userRoleDto) {
+
         User user = findById(id);
 
         userMapper.updateUserRoleFromDto(userRoleDto, user);
@@ -116,6 +119,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllCouriers() {
+
         List<User> couriers = userRepository.findAllCouriers(3L);
         return userMapper.toDtoList(couriers);
     }
@@ -140,12 +144,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Void deleteById(int id) {
+
         userRepository.deleteById(id);
         return null;
     }
 
     @Override
     public List<UserDto> getAllActiveUsers() {
+
         return userRepository.findAllByStatus(UserStatus.ACTIVE)
                 .stream()
                 .map(userMapper::toDto)
@@ -154,6 +160,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getActiveUserById(Integer id) {
+
         User user = userRepository.findByIdAndStatus(id, UserStatus.ACTIVE)
                 .orElseThrow(BaseException::userNotFound);
 
@@ -162,6 +169,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deactivateUser(Integer id) {
+
         User user = userRepository.findById(id)
                 .orElseThrow(BaseException::userNotFound);
 
@@ -171,6 +179,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void activateUser(Integer id) {
+
         User user = userRepository.findById(id)
                 .orElseThrow(BaseException::userNotFound);
 

@@ -17,6 +17,7 @@ public class JwtService {
     private static final long REFRESH_EXP = 1000L * 60 * 60 * 24 * 7;
 
     public String generateAccessToken(User user) {
+
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("userId", user.getId())
@@ -40,5 +41,4 @@ public class JwtService {
                 .signWith(PublicPrivateKeyUtils.getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
     }
-
 }

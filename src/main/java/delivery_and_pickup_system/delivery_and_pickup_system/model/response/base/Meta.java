@@ -29,21 +29,25 @@ public final class Meta {
         return of(responseMessages.key(), responseMessages.message());
     }
 
-
     public static Meta of(BaseException ex) {
+
         if (ex.getResponseMessage().equals(NOT_FOUND)) {
+
             NotFoundExceptionType notFoundData = ex.getNotFoundData();
 
             return of(
-                    String.format(ex.getResponseMessage().key(), notFoundData.getTarget().toLowerCase()),
-                    String.format(ex.getResponseMessage().message(), notFoundData.getTarget(), notFoundData.getFields().toString())
+                    String.format(
+                            ex.getResponseMessage().key(),
+                            notFoundData.getTarget().toLowerCase()
+                    ),
+                    String.format(
+                            ex.getResponseMessage().message(),
+                            notFoundData.getTarget(),
+                            notFoundData.getFields().toString()
+                    )
             );
         }
 
-        return of((ResponseMessage) ex.getResponseMessage());
+        return of(ex.getResponseMessage());
     }
-
-
-
-
 }

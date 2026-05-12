@@ -20,23 +20,38 @@ import org.springframework.context.annotation.Configuration;
 )
 public class SwaggerConfig {
 
+    private static final String SECURITY_SCHEME_NAME = "Authorization";
 
+    // ===================== OPEN API CONFIG =====================
     @Bean
-    public OpenAPI myOpenAPI() {
+    public OpenAPI openAPI() {
 
+        Contact contact = buildContact();
+        Info info = buildApiInfo(contact);
+
+        return new OpenAPI()
+                .info(info)
+                .addSecurityItem(
+                        new SecurityRequirement().addList(SECURITY_SCHEME_NAME)
+                );
+    }
+
+    // ===================== CONTACT =====================
+    private Contact buildContact() {
         Contact contact = new Contact();
         contact.setEmail("sadiqqenberov@gmail.com");
         contact.setName("SadiqQenberov");
         contact.setUrl("https://www.sadiqqenberov.com");
+        return contact;
+    }
 
-        Info info = new Info()
+    // ===================== API INFO =====================
+    private Info buildApiInfo(Contact contact) {
+        return new Info()
                 .title("Delivery and Pickup API")
                 .version("1.0")
                 .contact(contact)
                 .description("This API is used for cargo post services.")
                 .termsOfService("https://www.sadiqqenberov.com/terms");
-
-        return new OpenAPI().info(info)
-                .addSecurityItem(new SecurityRequirement().addList("Authorization"));
     }
 }

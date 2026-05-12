@@ -8,7 +8,6 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.proof_of_elivery.ProofOfDeliveryResponseDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ProofOfDeliveryRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -17,12 +16,12 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class ProofOfDeliveryServiceImpl implements ProofOfDeliveryService {
 
-    private final ProofOfDeliveryRepository repository;
-    private final ShipmentRepository shipmentRepository;
-    private final ProofOfDeliveryMapper mapper;
+    ProofOfDeliveryRepository repository;
+    ShipmentRepository shipmentRepository;
+    ProofOfDeliveryMapper mapper;
 
     private String generateOtp() {
         int otp = (int) (Math.random() * 900000) + 100000;
@@ -50,9 +49,9 @@ public class ProofOfDeliveryServiceImpl implements ProofOfDeliveryService {
                 .confirmedAt(LocalDateTime.now())
                 .build();
 
-        repository.save(pod);
+        ProofOfDelivery saved = repository.save(pod);
 
-        return mapper.toDto(pod);
+        return mapper.toDto(saved);
     }
 
     @Override

@@ -24,5 +24,4 @@ public interface DeliveryMapper {
 
     @Mapping(source = "shipment.id", target = "shipmentId")
     FailedDeliveryResponseDto toDto(FailedDelivery failedDelivery);
-
 }

@@ -26,6 +26,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<DeliveryReportDto> getDeliveryReports() {
+
         return deliveryRepository.findAll()
                 .stream()
                 .map(reportMapper::toDeliveryDto)
@@ -34,6 +35,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<FailureReportDto> getFailureReports() {
+
         return failedDeliveryRepository.findAll()
                 .stream()
                 .map(reportMapper::toFailureDto)
@@ -42,6 +44,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<ReturnReportDto> getReturnReports() {
+
         return returnRepository.findAll()
                 .stream()
                 .map(reportMapper::toReturnDto)
@@ -50,11 +53,14 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<CourierPerformanceDto> getCourierPerformance() {
+
         return userRepository.findAll()
                 .stream()
                 .map(user -> {
+
                     long success = deliveryRepository.countByCourierAndSuccess(user, true);
                     long failed = deliveryRepository.countByCourierAndSuccess(user, false);
+
                     return reportMapper.toDto(user, success, failed);
                 })
                 .toList();
