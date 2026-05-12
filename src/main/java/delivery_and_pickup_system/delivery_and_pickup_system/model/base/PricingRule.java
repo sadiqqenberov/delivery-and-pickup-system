@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "pricing_rules")
 @Getter
@@ -20,19 +22,19 @@ public class PricingRule {
     Integer id;
 
     @Column(nullable = false)
-    Double maxWeight;
+    BigDecimal maxWeight;
 
     @Column(nullable = false)
-    Double maxDistance;
+    BigDecimal maxDistance;
 
     @Column(nullable = false)
-    Double basePrice;
+    BigDecimal basePrice;
 
     @Column(nullable = false)
-    Double extraPricePerKg;
+    BigDecimal extraPricePerKg;
 
     @Column(nullable = false)
-    Double extraPricePerKm;
+    BigDecimal extraPricePerKm;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "standard_delivery")

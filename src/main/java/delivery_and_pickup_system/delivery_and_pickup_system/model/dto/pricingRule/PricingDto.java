@@ -7,12 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PricingDto {
-    Double weight;
-    Double distance;
+    BigDecimal weight;
+    BigDecimal distance;
     RuleDelivery standardDelivery;
 }

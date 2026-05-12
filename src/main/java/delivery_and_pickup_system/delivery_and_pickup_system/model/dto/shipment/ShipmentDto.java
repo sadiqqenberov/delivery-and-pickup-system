@@ -1,6 +1,5 @@
 package delivery_and_pickup_system.delivery_and_pickup_system.model.dto.shipment;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Data;
 import java.math.BigDecimal;
 

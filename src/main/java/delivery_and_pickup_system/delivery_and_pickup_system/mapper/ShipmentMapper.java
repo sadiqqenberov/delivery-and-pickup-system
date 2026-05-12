@@ -34,4 +34,5 @@ public interface ShipmentMapper {
     @Mapping(target = "createdBy", ignore = true)
     void updateShipmentFromDto(ShipmentDto dto, @MappingTarget Shipment shipment);
 
+
 }

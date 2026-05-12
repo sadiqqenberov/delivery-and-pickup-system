@@ -19,4 +19,5 @@ public class ShipmentResponseDto {
     private String statusMessage;
 
     private String createdByName;
+
 }

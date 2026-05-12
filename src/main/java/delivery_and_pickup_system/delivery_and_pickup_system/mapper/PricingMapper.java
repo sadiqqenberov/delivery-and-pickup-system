@@ -5,6 +5,8 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.pricingRu
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.pricingRule.PricingRuleDto;
 import org.mapstruct.*;
 
+import java.math.BigDecimal;
+
 @Mapper(
         componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -13,7 +15,7 @@ import org.mapstruct.*;
 )
 public interface PricingMapper {
 
-    default PricingResponseDTO toResponseDTO(Double totalPrice) {
+    default PricingResponseDTO toResponseDTO(BigDecimal totalPrice) {
         return PricingResponseDTO.builder()
                 .totalPrice(totalPrice)
                 .build();

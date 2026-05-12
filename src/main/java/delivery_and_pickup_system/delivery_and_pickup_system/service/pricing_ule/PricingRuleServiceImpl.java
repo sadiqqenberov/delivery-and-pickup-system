@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,18 +29,28 @@ public class PricingRuleServiceImpl implements PricingRuleService {
 
         PricingRule rule = pricingRuleRepository
                 .findFirstByStandardDelivery(RuleDelivery.STANDARD)
-                .orElseThrow(() -> BaseException.notFound());
+                .orElseThrow(BaseException::notFound);
 
-        double totalPrice = rule.getBasePrice();
+        BigDecimal totalPrice = rule.getBasePrice();
 
-        if (dto.getWeight() > rule.getMaxWeight()) {
-            double extraWeight = dto.getWeight() - rule.getMaxWeight();
-            totalPrice += extraWeight * rule.getExtraPricePerKg();
+        if (dto.getWeight().compareTo(rule.getMaxWeight()) > 0) {
+
+            BigDecimal extraWeight =
+                    dto.getWeight().subtract(rule.getMaxWeight());
+
+            totalPrice = totalPrice.add(
+                    extraWeight.multiply(rule.getExtraPricePerKg())
+            );
         }
 
-        if (dto.getDistance() > rule.getMaxDistance()) {
-            double extraDistance = dto.getDistance() - rule.getMaxDistance();
-            totalPrice += extraDistance * rule.getExtraPricePerKm();
+        if (dto.getDistance().compareTo(rule.getMaxDistance()) > 0) {
+
+            BigDecimal extraDistance =
+                    dto.getDistance().subtract(rule.getMaxDistance());
+
+            totalPrice = totalPrice.add(
+                    extraDistance.multiply(rule.getExtraPricePerKm())
+            );
         }
 
         return pricingMapper.toResponseDTO(totalPrice);

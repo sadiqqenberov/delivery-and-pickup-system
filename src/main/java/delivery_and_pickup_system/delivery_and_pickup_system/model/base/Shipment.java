@@ -46,6 +46,7 @@ public class Shipment {
     @Column(nullable = false)
     BigDecimal price;
 
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     OrderStatus status;
