@@ -8,6 +8,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.mapper.UserMapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserPasswordDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserRoleDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.user.UserStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.security.LoggedInUserDetails;
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setAddress(userDto.getAddress());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRole(role);
 
         return userRepository.save(user);
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
         User user = findById(id);
 
         userMapper.updateUserFromDto(userDto, user);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         if (userDto.getRole() != null) {
 
@@ -120,6 +121,18 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUserRoleFromDto(userRoleDto, user);
 
         return userMapper.toDtoUserRole(userRepository.save(user));
+    }
+
+    @Transactional
+    @Override
+    public UserPasswordDto updateUserPassword(int id, UserPasswordDto userPasswordDto) {
+        User user = findById(id);
+
+        userMapper.updateUserPasswordFromDto(userPasswordDto,user);
+        user.setPassword(passwordEncoder.encode(userPasswordDto.getPassword()));
+
+        return userMapper.toDtoUserPassword(userRepository.save(user));
+
     }
 
     @Override

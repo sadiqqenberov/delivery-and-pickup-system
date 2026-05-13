@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-
 public interface StatusHistoryRepository extends JpaRepository<StatusHistory, Integer> {
 
     List<StatusHistory> findAllByShipmentIdOrderByChangedAtDesc(Integer shipmentId);

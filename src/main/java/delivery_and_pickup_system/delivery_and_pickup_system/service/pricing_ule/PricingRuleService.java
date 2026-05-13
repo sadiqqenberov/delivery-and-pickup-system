@@ -11,7 +11,7 @@ public interface PricingRuleService {
 
     Iterable<PricingRule> findAll();
 
-    PricingRuleDto update(int id, PricingRuleDto pricingRuleDto);
+    PricingRuleDto update(Integer id, PricingRuleDto pricingRuleDto);
 
     PricingRule create(PricingRuleDto pricingRuleDto);
 

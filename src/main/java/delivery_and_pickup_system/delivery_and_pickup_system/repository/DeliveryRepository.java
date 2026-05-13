@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DeliveryRepository extends JpaRepository<Delivery, Integer> {
-    long countByCourierAndSuccess(User courier, Boolean success);
 
+    long countByCourierAndSuccess(User courier, Boolean success);
 }

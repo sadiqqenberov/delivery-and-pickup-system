@@ -60,7 +60,7 @@ public class PricingRuleServiceImpl implements PricingRuleService {
 
     @Transactional
     @Override
-    public PricingRuleDto update(int id, PricingRuleDto pricingRuleDto) {
+    public PricingRuleDto update(Integer id, PricingRuleDto pricingRuleDto) {
 
         PricingRule pricingRule = pricingRuleRepository.findById(id);
 

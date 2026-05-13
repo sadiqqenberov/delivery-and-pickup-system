@@ -3,8 +3,8 @@ package delivery_and_pickup_system.delivery_and_pickup_system.mapper;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Role;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserPasswordDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserRoleDto;
-import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserStatusDto;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -25,12 +25,14 @@ public interface UserMapper {
 
     List<UserDto> toDtoList(List<User> users);
 
-    UserStatusDto toDtoUser(User user);
-
     UserRoleDto toDtoUserRole(User user);
+
+    UserPasswordDto toDtoUserPassword(User user);
 
     @Mapping(target = "role", ignore = true)
     void updateUserFromDto(UserDto dto, @MappingTarget User user);
 
     void updateUserRoleFromDto(UserRoleDto dto, @MappingTarget User user);
+
+    void updateUserPasswordFromDto(UserPasswordDto dto,@MappingTarget User user);
 }

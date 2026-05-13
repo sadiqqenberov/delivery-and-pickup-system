@@ -2,6 +2,7 @@ package delivery_and_pickup_system.delivery_and_pickup_system.controller;
 
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserPasswordDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.user.UserRoleDto;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.response.base.BaseResponse;
@@ -47,6 +48,12 @@ public class UserController {
     @PatchMapping("/role/{id}")
     public UserRoleDto updateUserRole(@PathVariable int id, @RequestBody UserRoleDto userRoleDto) {
         return userService.updateUserRole(id,userRoleDto);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PatchMapping("/password/{id}")
+    public UserPasswordDto updateUserPassword(@PathVariable int id, @RequestBody UserPasswordDto userPasswordDto){
+        return userService.updateUserPassword(id,userPasswordDto);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','OPERATOR')")

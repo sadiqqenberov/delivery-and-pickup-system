@@ -8,6 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface ProofOfDeliveryRepository extends JpaRepository<ProofOfDelivery, Integer> {
+
     Optional<ProofOfDelivery> findByShipmentId(Integer shipmentId);
+
     boolean existsByShipmentId(Integer shipmentId);
 }
