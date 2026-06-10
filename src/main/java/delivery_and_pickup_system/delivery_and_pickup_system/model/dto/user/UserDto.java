@@ -36,6 +36,8 @@ public class UserDto {
     @Size(max = 255)
     String address;
 
+    String password;
+
     @NotBlank
     String role;
 }

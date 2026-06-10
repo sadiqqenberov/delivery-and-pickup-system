@@ -6,6 +6,7 @@ import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Assignme
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.Shipment;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.base.User;
 import delivery_and_pickup_system.delivery_and_pickup_system.model.dto.assignment.AssignmentDto;
+import delivery_and_pickup_system.delivery_and_pickup_system.model.enums.status.OrderStatus;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.AssignmentRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.ShipmentRepository;
 import delivery_and_pickup_system.delivery_and_pickup_system.repository.UserRepository;
@@ -46,6 +47,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .courier(courier)
                 .assignedAt(LocalDateTime.now())
                 .build();
+        shipment.setStatus(OrderStatus.PICKED_UP_BY_COURIER);
 
         Assignment saved = assignmentRepository.save(assignment);
 

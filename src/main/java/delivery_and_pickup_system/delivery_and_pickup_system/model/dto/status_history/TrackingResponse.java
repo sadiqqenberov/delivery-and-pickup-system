@@ -12,6 +12,6 @@ public class TrackingResponse {
     private String trackingNumber;
     private String receiverName;
     private String deliveryAddress;
-    private OrderStatus currentStatus;
-    private List<StatusHistoryDTO> history;
+    private OrderStatus status;
+    private List<StatusHistoryDTO> statusHistory;
 }

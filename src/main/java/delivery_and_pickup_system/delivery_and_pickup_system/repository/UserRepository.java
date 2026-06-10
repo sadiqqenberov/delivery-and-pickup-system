@@ -12,19 +12,19 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
-    Optional<User> findByEmail(String email);
-
-    Optional<User> findByEmailWithRole(String email);
+    Optional<User> findByEmail(@Param("email") String email);
 
     User findById(int id);
-
-    List<User> findAllByStatus(UserStatus status);
-
-    Optional<User> findByIdAndStatus(Integer id, UserStatus status);
 
     @Query("SELECT u FROM User u WHERE u.role.id = :roleId")
     List<User> findAllCouriers(@Param("roleId") Long roleId);
 
     Optional<User> findFirstByNameAndSurname(String name, String surname);
+
+    @Query("select u from User u join fetch u.role where u.email = :email")
+    Optional<User> findByEmailWithRole(@Param("email") String email);
+
+    List<User> findAllByStatus(UserStatus status);
+
+    Optional<User> findByIdAndStatus(Integer id, UserStatus status);
 }
